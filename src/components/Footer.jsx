@@ -2,7 +2,8 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="px-16 py-5 mt-28 w-full text-3xl text-black  max-md:px-5 max-md:mt-10 max-md:max-w-full "style={{ position: 'static' }}>
+    <footer className="px-16 py-5 mt-12 
+    w-full text-3xl text-black  max-md:px-5 max-md:mt-10 max-md:max-w-full "style={{ position: 'static' }}>
       <nav>
         <ul className="flex justify-center
         gap-12 list-none p-0 m-0 

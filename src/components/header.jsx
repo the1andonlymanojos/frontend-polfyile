@@ -41,7 +41,7 @@ const Header = () => {
         <nav className="flex gap-10 self-start mt-5 text-3xl">
           <button
             onClick={handleLoginClick}
-            className="px-9 pb-3 text-black  rounded-[50px] max-md:px-5 pt-1 hover:bg-white text-4xl"
+            className="px-9 pb-3 text-black  rounded-[50px] max-md:px-5 pt-1 hover:text-sky-700 text-4xl"
           >
             Log in
           </button>

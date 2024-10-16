@@ -1,24 +1,18 @@
 import React from "react";
-import Header from "./components/header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import backgroundImage from "./components/img/background.svg";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 
-const App = () => {
+
+function App() {
   return (
-    <div
-      className="flex overflow-hidden flex-col bg-white bg-cover bg-no-repeat"
-      style={{
-        backgroundImage: `url(${backgroundImage})`, // Correctly reference the imported image
-      }}
-    >
-      <Header />
-      <main>
-        <Hero />
-      </main>
-      <Footer />
-    </div>
+
+      <BrowserRouter>
+      <Routes>
+      <Route path="/" element={<LandingPage />} />
+      </Routes>
+      </BrowserRouter>
+
   );
-};
+}
 
 export default App;

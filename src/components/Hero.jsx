@@ -18,12 +18,20 @@ const Hero = () => {
                 All-in-One <br /> File{" "}
                 <span className="text-sky-600">Powerhouse</span>
               </h2>
-              <p className="self-start mt-20 text-3xl max-md:mt-10 max-md:max-w-full">
+              <p className="self-start mt-12 text-3xl max-md:mt-8 max-md:max-w-full">
                 We build File Tools to make your life easier. Access an
                 easy-to-use File Solution with all features you need. Convert
                 files to PDF, from PDF, merge, fill, sign, and compress PDFs
                 within a few clicks.
               </p>
+              {/* Move the button here, closer to the main content */}
+              <div className="relative mt-12">
+                <button className="flex shrink-0 max-w-full bg-black h-[57px] rounded-[50px] w-[345px] items-center justify-center">
+                  <span className="z-10 text-3xl tracking-widest text-white">
+                    Get Started
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex flex-col ml-5 w-[55%] max-md:ml-0 max-md:w-full">
@@ -35,13 +43,6 @@ const Hero = () => {
             />
           </div>
         </div>
-      </div>
-      <div className="relative mt-10">
-        <button className="flex shrink-0 max-w-full bg-black h-[57px] rounded-[50px] w-[345px] items-center justify-center">
-          <span className="z-10 text-3xl tracking-widest text-white">
-            Get Started
-          </span>
-        </button>
       </div>
     </section>
   );
