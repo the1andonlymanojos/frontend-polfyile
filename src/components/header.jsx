@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import SignUpForm from './SignUpForm'; // Import the SignUpForm component
-import LoginForm from './Login';   // Import the LoginForm component
+import React, { useState } from "react";
+import SignUpForm from "./SignUpForm"; // Import the SignUpForm component
+import LoginForm from "./Login"; // Import the LoginForm component
 
 const Header = () => {
   const [showSignUp, setShowSignUp] = useState(false); // State to control the signup popup
-  const [showLogin, setShowLogin] = useState(false);   // State to control the login popup
+  const [showLogin, setShowLogin] = useState(false); // State to control the login popup
 
   const handleSignUpClick = () => {
-    setShowSignUp(true);  // Show the signup form when button is clicked
-    setShowLogin(false);  // Ensure login form is hidden
+    setShowSignUp(true); // Show the signup form when button is clicked
+    setShowLogin(false); // Ensure login form is hidden
   };
 
   const handleLoginClick = () => {
-    setShowLogin(true);   // Show the login form when button is clicked
+    setShowLogin(true); // Show the login form when button is clicked
     setShowSignUp(false); // Ensure signup form is hidden
   };
 
@@ -33,7 +33,7 @@ const Header = () => {
           />
           <h1
             className="flex-auto self-start text-40xl m-auto"
-            style={{ fontFamily: "'DM Serif Text', serif", fontWeight: 'bold' }}
+            style={{ fontFamily: "'DM Serif Text', serif", fontWeight: "bold" }}
           >
             POLYFILE
           </h1>
@@ -46,12 +46,11 @@ const Header = () => {
             Log in
           </button>
           <button
-  onClick={handleSignUpClick}
-  className="px-9 pb-3 text-white bg-sky-600 rounded-[50px] max-md:px-5 pt-1 hover:bg-black "
->
-  Sign Up
-</button>
-
+            onClick={handleSignUpClick}
+            className="px-9 pb-3 text-white bg-sky-600 rounded-[50px] max-md:px-5 pt-1 hover:bg-black "
+          >
+            Sign Up
+          </button>
         </nav>
       </header>
 
@@ -65,7 +64,7 @@ const Header = () => {
             >
               &times;
             </button>
-            <SignUpForm handleLoginClick={handleLoginClick} /> 
+            <SignUpForm handleLoginClick={handleLoginClick} />
           </div>
         </div>
       )}
@@ -80,8 +79,8 @@ const Header = () => {
             >
               &times;
             </button>
-            <LoginForm handleSignUpClick =
-            {handleSignUpClick}/> {/* Login form displayed inside the popup */}
+            <LoginForm handleSignUpClick={handleSignUpClick} />{" "}
+            {/* Login form displayed inside the popup */}
           </div>
         </div>
       )}
