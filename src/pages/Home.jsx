@@ -1,9 +1,26 @@
-import React from 'react'
+import React from "react";
+import Header from "../components/Home/Header";
+import Hero from "../components/Home/Hero";
+import backgroundImage from "../components/img/background.svg";
 
-function Home() {
+
+
+export default function Home() {
   return (
-    <div>Home</div>
-  )
+    <div
+      className="flex overflow-hidden flex-col bg-white"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+        backgroundPosition: "center",
+      }}
+    >
+      <Header />
+      <main>
+      <Hero/>
+      </main>
+    </div>
+  );
 }
-
-export default Home
