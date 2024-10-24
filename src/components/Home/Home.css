@@ -26,3 +26,125 @@
   /* Dropdown background color */
   z-index: 1;
 }
+body,
+html {
+  overflow: auto; /* Ensure that the body is scrollable */
+  padding-top: 10px;
+  margin: 0;
+}
+
+.tools {
+  margin: auto;
+  max-width: 2000px;
+  padding: 0 40px 42px; /* Reduce padding */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items at the top */
+  flex-wrap: wrap;
+  position: relative;
+  padding-top: 50px;
+  min-height: 80vh;
+}
+
+.tools__container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  position: relative;
+  justify-content: center; /* Spread out the items evenly */
+}
+
+.tools__item {
+  background: rgb(255, 255, 255);
+  border: 1px solid #f5f5fa;
+  margin: 8px;
+  /* Reduce margin between items */
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.4s ease-out, background-color 0.4s ease-out;
+  z-index: 1;
+  border-radius: 8px; /* Softer rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  flex-basis: calc(24% - 16px); /* 4 cards in one row, reducing margin */
+  min-height: 350px; /* Ensure height is maintained */
+  /* text-align: center; */
+  display: flex;
+  flex-direction: row;
+
+  /* justify-content: center; */
+}
+
+.tools__item:hover {
+  transform: scale(1.05); /* Slightly increase size */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.tools__item__icon {
+  width: 64px;
+  height: 64px;
+  margin-top: 30px;
+  margin-left: 30px;
+  /* margin: 16px auto; Centers the icon */
+}
+
+@media (max-width: 1280px) {
+  .tools__item {
+    flex-basis: calc(24% - 16px); /* Still 4 items per row */
+  }
+}
+
+@media (max-width: 960px) {
+  .tools__item {
+    flex-basis: calc(32% - 12px); /* 3 items per row for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .tools__item {
+    flex-basis: calc(48% - 10px); /* 2 items per row for mobile screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .tools__item {
+    flex-basis: calc(100% - 10px); /* 1 item per row for very small screens */
+  }
+}
+
+.tools__item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Hover effect */
+}
+
+.tools__item p {
+  font-size: 20px;
+  color: #333;
+  margin-left: 30px;
+  margin-right: 15px;
+}
+
+@media (max-width: 767.98px) {
+  .tools__item h3 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+@media (max-width: 991.98px) {
+  .tools__item h3 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+.tools__item h3 {
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 28px;
+  color: #33333b;
+  margin-bottom: 8px;
+}
+
+.tools__item h3 {
+  /* font-size: 2px; */
+  margin-top: 34px;
+  margin-left: 30px;
+}

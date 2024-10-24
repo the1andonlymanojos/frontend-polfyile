@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Home.css";
-import backgroundImage from "../img/background.svg";
 
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
