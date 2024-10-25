@@ -4,7 +4,8 @@ import LandingPage from "./pages/LandingPage";
 import Help from "./pages/Help";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
-
+import Term from "./pages/Term";
+import Drag from "./pages/DragAndDrop";
 function App() {
   return (
 
@@ -14,6 +15,8 @@ function App() {
       <Route path="/Help" element={<Help/>} />
       <Route path="/About" element={<About/>} />
       <Route path="/Privacy" element={<Privacy/>} />
+      <Route path="/Term" element={<Term/>} />
+      <Route path="/Drag" element={<Drag/>} />
       </Routes>
       </BrowserRouter>
 

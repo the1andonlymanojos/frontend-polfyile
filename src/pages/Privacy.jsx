@@ -4,7 +4,7 @@ import Hero from "../components/PrivacyMain";
 import Header from "../components/header";
 import backgroundImage from "../components/img/background.svg";
 
-const About = () => {
+const Privacy = () => {
   return (
     <div
       className="flex overflow-auto flex-col bg-white bg-cover bg-no-repeat"
@@ -25,4 +25,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Privacy;
