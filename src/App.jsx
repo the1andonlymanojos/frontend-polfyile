@@ -8,8 +8,7 @@ import Term from "./pages/Term";
 import Drag from "./pages/DragAndDrop";
 function App() {
   return (
-
-      <BrowserRouter>
+    <BrowserRouter>
       <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/Help" element={<Help/>} />
@@ -18,8 +17,7 @@ function App() {
       <Route path="/Term" element={<Term/>} />
       <Route path="/Drag" element={<Drag/>} />
       </Routes>
-      </BrowserRouter>
-
+    </BrowserRouter>
   );
 }
 
