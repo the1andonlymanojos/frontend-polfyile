@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../components/header";
-import Hero from "../components/Hero";
-import Footer from "../components/Footer";
+import Header from "../components/landingpage/header";
+import Hero from "../components/landingpage/Hero";
+import Footer from "../components/landingpage/Footer";
 import backgroundImage from "../components/img/background.svg";
 
 const LandingPage = () => {
