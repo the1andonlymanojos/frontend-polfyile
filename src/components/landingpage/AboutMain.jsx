@@ -5,7 +5,7 @@ const UserGuidePage = () => {
   return (
 
     <div className="container mx-auto py-16 px-4">
-      <h1 className="text-5xl font-bold text-center mb-8">About Our File & PDF Conversion Tool</h1>
+      <h1 className="text-5xl font-bold text-center mb-8 mt-10">About Our File & PDF Conversion Tool</h1>
       <p className="text-3xl text-center mb-10">
         Our File and PDF Conversion tool is designed to help you manage your documents with ease. Whether you need to convert image files to PDF, extract images from a PDF, or change file formats between common types, this tool .
       </p>

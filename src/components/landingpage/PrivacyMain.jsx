@@ -4,29 +4,38 @@ import React from 'react';
 const UserGuidePage = () => {
     return (
         <div className="container mx-auto py-16 ">
-            <h1 className="text-7xl font-bold text-center mb-8">Data Security and Privacy Policies</h1>
+            <h1 className="text-7xl font-bold text-center mb-8 mt-10">Data Security and Privacy Policies</h1>
             <p className="text-2xl text-center mb-12 pb-10">
                 In-depth insight into PolyFile's Privacy and Security Framework
             </p>
 
-            <div className="flex flex-row gap-8 w-full justify-center p-9">
-                <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4">
-                    <p className="font-bold text-3xl">Security</p>
-                    <p className="text-xl pt-5">PolyFile is certified for meeting the requirements establishment by the insternational standard ISO/IEC 27001.</p>
-                </div>
-                <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4">
-                    <p className="font-bold text-3xl">Privacy</p>
-                    <p className="text-xl pt-5">File you upload and Process are encrypted and deleted from our servers within 2 hours . protecting your data and privacy.</p>
-                </div>
-                <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4">
-                    <p className="font-bold text-3xl">Terms</p>
-                    <p className="text-xl pt-5">Here are the rule you must follow to get your work done in PolyFile. By using PolyFile, you agree to our Terms and Conditions.</p>
-                </div>
-                <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4">
-                    <p className="font-bold text-3xl">Cookies</p>
-                    <p className="text-xl pt-5">This document informs Users about the technologies that help this Application to achieve the purposes described below.</p>
-                </div>
-            </div>
+            <div className="flex flex-wrap gap-8 w-full justify-center p-9">
+  <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4 md:w-[45%] lg:w-[22%]">
+    <p className="font-bold text-3xl">Security</p>
+    <p className="text-xl pt-5">
+      PolyFile is certified for meeting the requirements established by the international standard ISO/IEC 27001.
+    </p>
+  </div>
+  <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4 md:w-[45%] lg:w-[22%]">
+    <p className="font-bold text-3xl">Privacy</p>
+    <p className="text-xl pt-5">
+      Files you upload and process are encrypted and deleted from our servers within 2 hours, protecting your data and privacy.
+    </p>
+  </div>
+  <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4 md:w-[45%] lg:w-[22%]">
+    <p className="font-bold text-3xl">Terms</p>
+    <p className="text-xl pt-5">
+      Here are the rules you must follow to get your work done in PolyFile. By using PolyFile, you agree to our Terms and Conditions.
+    </p>
+  </div>
+  <div className="flex-grow bg-white hover:scale-105 text-center h-80 w-64 rounded-lg text-gray-800 cursor-pointer transition-all duration-300 shadow-lg p-4 md:w-[45%] lg:w-[22%]">
+    <p className="font-bold text-3xl">Cookies</p>
+    <p className="text-xl pt-5">
+      This document informs Users about the technologies that help this Application to achieve the purposes described below.
+    </p>
+  </div>
+</div>
+
 
 
             <div className="flex flex-col items-center text-center py-16 bg-[#bde5fc] w-full mx-auto max-w-screen-9xl">

@@ -10,6 +10,7 @@ const LandingPage = () => {
       className="flex overflow-hidden flex-col bg-white bg-cover bg-no-repeat"
       style={{
         backgroundImage: `url(${backgroundImage})`, // Correctly reference the imported image
+        marginTop:`50px`
       }}
     >
       <Header />

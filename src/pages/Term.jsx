@@ -48,7 +48,7 @@ const Term = () => {
             <div className="flex flex-row flex-1 pt-15"> {/* Adjust padding to avoid overlap with header */}
                 {/* Sidebar */}
                 <div className="w-1/6 h-screen bg-[#ffffff]  sticky top-16 overflow-y-auto"> {/* Add overflow-y-auto for scrolling */}
-                    <h2 className="font-bold text-4xl mb-4">Terms and Conditions</h2>
+                    <h2 className="font-bold text-4xl mb-4 mt-10">Terms and Conditions</h2>
 
                     {/* Use of Service */}
                     <h3 className="font-semibold text-2xl mt-4">Use of Service</h3>
@@ -145,7 +145,7 @@ const Term = () => {
 
                 {/* Main Content */}
                 <div className="flex-1 pl-50 ml-50 pt-4"> {/* Padding to the top to avoid overlap with header */}
-                    <h1 className="font-bold text-8xl">Terms and Conditions</h1>
+                    <h1 className="font-bold text-5xl mt-20">Terms and Conditions</h1>
 
                     {/* Use of Service Section */}
                     <h2 className="font-semibold text-5xl mt-8 pt-6" id="use-of-service-general">Use of Service -General</h2>
