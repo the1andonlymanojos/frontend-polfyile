@@ -177,7 +177,7 @@ function Drag() {
             >
               Download Merged File
             </a>
-          )}
+           )} 
         </div>
       </div>
     </DndProvider>

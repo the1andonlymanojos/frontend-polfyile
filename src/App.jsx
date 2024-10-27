@@ -11,6 +11,9 @@ import WordtoPDF from "./pages/uploads/WordtoPDF";
 import HtmltoPDF from "./pages/uploads/HtmltoPDF";
 import ImageToPDF from "./pages/uploads/ImagetoPDF";
 import ProtectPDF from "./pages/uploads/ProtectPDF";
+import SplitPDF from "./pages/uploads/SplitPDF";
+import CompressPDF from "./pages/uploads/CompressPDF";
+import AddWatermark from "./pages/uploads/AddWatermark";
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="/HtmltoPDF" element={<HtmltoPDF />} />
         <Route path="/ImagetoPDF" element={<ImageToPDF />} />
         <Route path="/ProtectPDF" element={<ProtectPDF />} />
+        <Route path="/SplitPDF" element={<SplitPDF />} />
+        <Route path="/CompressPDF" element={<CompressPDF />} />
+        <Route path="/AddWatermark" element={<AddWatermark />} />
       </Routes>
     </BrowserRouter>
   );
