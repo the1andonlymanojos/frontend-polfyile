@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import backgroundImage from "../components/img/background.svg"; // Ensure this path is correct
-import Header from "../components/header";
+import backgroundImage from "../components/img/background.svg"; 
+import Header from "../components/landingpage/header";
 
 const Term = () => {
     const [activeSection, setActiveSection] = useState('');
