@@ -10,25 +10,19 @@ function Header() {
   const toggleDropdown = (dropdownType) => {
     if (dropdownType === "pdf") {
       setIsDropdownOpenPdf((prev) => {
-        // If the PDF dropdown is currently open, close it and return false.
         if (prev) {
-          // Close the image dropdown if it's open.
           return false;
         }
-        // Otherwise, open the PDF dropdown and close the image dropdown.
-        setIsDropdownOpen(false); // Ensure the image dropdown is closed.
-        return true; // Open the PDF dropdown.
+        setIsDropdownOpen(false);
+        return true;
       });
     } else {
       setIsDropdownOpen((prev) => {
-        // If the image dropdown is currently open, close it and return false.
         if (prev) {
-          // Close the PDF dropdown if it's open.
           return false;
         }
-        // Otherwise, open the image dropdown and close the PDF dropdown.
-        setIsDropdownOpenPdf(false); // Ensure the PDF dropdown is closed.
-        return true; // Open the image dropdown.
+        setIsDropdownOpenPdf(false);
+        return true;
       });
     }
   };
@@ -80,15 +74,20 @@ function Header() {
   ];
 
   const imageTools = [
-    { label: "Compress Image", link: "/compress-image" },
-    { label: "Resize Image", link: "/resize-image" },
-    { label: "Crop Image", link: "/crop-image" },
-    { label: "Convert Image", link: "/convert-image" },
-    { label: "Watermark", link: "/watermark-image" },
-    { label: "Rotate Image", link: "/rotate-image" },
-    { label: "HTML to Image", link: "/html-to-image" },
-    { label: "Convert Image", link: "/convert-image" },
+    { label: "Compress Image", link: "/CompressImage" },
+    { label: "Resize Image", link: "/ResizeImage" },
+    { label: "Crop Image", link: "/CropImage" },
+    { label: "Convert Image", link:"/ConvertImage" },
+    { label: "Watermark", link: "/WaterMarkImage" },
+    { label: "Rotate Image", link: "/RotateImage" },
+    { label: "HTML to Image", link: "/HtmlImage" },
+    // { label: "Convert Image", link: "/convert-image" },
   ];
+
+  const links = imageTools
+  .map(tool => `<a href="/_${tool.link}">${tool.label}</a>`)
+  .join("<br>");
+
 
   return (
     <div>
@@ -119,9 +118,7 @@ function Header() {
             >
               All PDF Tools
               <span
-                className={`ml-2 ${
-                  isDropdownOpenPdf ? "rotate-0" : "rotate-180"
-                }`}
+                className={`ml-2 ${isDropdownOpenPdf ? "rotate-0" : "rotate-180"}`}
               >
                 &#9662;
               </span>
@@ -132,7 +129,7 @@ function Header() {
           {/* Image Tools Dropdown */}
           <div className="relative group">
             <button
-              className={`flex ml-3 text-2xl text-grey-100 px-6 py-3 rounded-md  mt-1.5 
+              className={`flex ml-3 text-2xl text-grey-100 px-6 py-3 rounded-md mt-1.5 
               ${isDropdownOpen ? "text-sky-500 " : "text-grey-100"}`}
               onClick={() => toggleDropdown("image")}
             >
@@ -146,16 +143,14 @@ function Header() {
             <DropdownMenu isOpen={isDropdownOpen} items={imageTools} />
           </div>
 
-          {/* profile section */}
           {/* Profile Section */}
           <div
-            className="relative group ml-auto" // Ensure the profile section is aligned to the right
+            className="relative group ml-auto"
             onMouseEnter={toggleProfileDropdown}
             onMouseLeave={toggleProfileDropdown}
           >
             <button className="flex text-2xl text-grey-100 px-6 py-3 rounded-md hover:text-sky-500 mt-1.5">
-              <i className="fas fa-user-circle fa-2xl  mr-0 m-auto"></i>{" "}
-              {/* User icon */}
+              <i className="fas fa-user-circle fa-2xl mr-0 m-auto"></i>
               <span className="ml-2">
                 {isProfileDropdownOpen ? (
                   <svg
@@ -190,8 +185,7 @@ function Header() {
             </button>
 
             {isProfileDropdownOpen && (
-              <div className="absolute mt-6 w-40  bg-white rounded-md shadow-lg right-0">
-                <div className="dropdown-arrow ml-3"></div>
+              <div className="absolute mt-6 w-40 bg-white rounded-md shadow-lg right-0">
                 <ul className="py-1 text-black">
                   <li>
                     <a

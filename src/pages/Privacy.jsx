@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../components/landingpage/Helpfooter";
 import Hero from "../components/landingpage/PrivacyMain";
-import Header from "../components/landingpage/header";
+import Header from "../components/Home/Header";
 import backgroundImage from "../components/img/background.svg";
 
 const Privacy = () => {

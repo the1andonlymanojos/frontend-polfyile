@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import backgroundImage from "../components/img/background.svg"; // Ensure this path is correct
-import Header from "../components/header";
+import Header from "../components/Home/Header";
+import Footer from "../components/landingpage/Helpfooter";
 
 const Term = () => {
     const [activeSection, setActiveSection] = useState('');
@@ -48,7 +49,7 @@ const Term = () => {
             <div className="flex flex-row flex-1 pt-15"> {/* Adjust padding to avoid overlap with header */}
                 {/* Sidebar */}
                 <div className="w-1/6 h-screen bg-[#ffffff]  sticky top-16 overflow-y-auto"> {/* Add overflow-y-auto for scrolling */}
-                    <h2 className="font-bold text-4xl mb-4">Terms and Conditions</h2>
+                    <h2 className="font-bold text-3xl pt-5 mb-4">Terms and Conditions</h2>
 
                     {/* Use of Service */}
                     <h3 className="font-semibold text-2xl mt-4">Use of Service</h3>
@@ -145,7 +146,7 @@ const Term = () => {
 
                 {/* Main Content */}
                 <div className="flex-1 pl-50 ml-50 pt-4"> {/* Padding to the top to avoid overlap with header */}
-                    <h1 className="font-bold text-8xl">Terms and Conditions</h1>
+                    <h1 className="font-bold text-6xl mt-8 pt-9">Terms and Conditions</h1>
 
                     {/* Use of Service Section */}
                     <h2 className="font-semibold text-5xl mt-8 pt-6" id="use-of-service-general">Use of Service -General</h2>
@@ -215,6 +216,7 @@ iLovePDF, in case of advance signature, provides a detailed audit trail, timesta
 iLovePDF is at disposition to provide the advanced electronically signed document as well as audit trail if required by a court of law (and in case iLovePDF still preserves this information), yet exempts itself from prosecution if the document is not upheld or found lacking.</p>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

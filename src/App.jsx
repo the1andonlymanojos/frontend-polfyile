@@ -4,31 +4,33 @@ import LandingPage from "./pages/LandingPage";
 import Help from "./pages/Help";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
-<<<<<<< HEAD
-import Term from "./pages/Term";
-import Drag from "./pages/DragAndDrop";
-=======
-import Home from "./pages/Home";
+import Term from "./pages/Term"; // Keep this import
+import CompressImage from "./components/DragAndDropForImage/DragAndDrop"; // Keep this import
+import Home from "./pages/Home"; // Keep this import
+import ResizeImage from "./components/DragAndDropForImage/Resize"; // Keep this import
+import CropImage from "./components/DragAndDropForImage/Crop"; // Keep this import
+import ConvertImage from "./components/DragAndDropForImage/ConvertImage";
+import WaterMarkImage from "./components/DragAndDropForImage/WaterMark";
+import RotateImage from "./components/DragAndDropForImage/Rotate";
+import HtmlImage from "./components/DragAndDropForImage/HtmlToImage";
 
->>>>>>> ef5bf031bc521af41557e64796ffa16f1c4cfa80
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-<<<<<<< HEAD
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/Help" element={<Help/>} />
-      <Route path="/About" element={<About/>} />
-      <Route path="/Privacy" element={<Privacy/>} />
-      <Route path="/Term" element={<Term/>} />
-      <Route path="/Drag" element={<Drag/>} />
-=======
         <Route path="/" element={<LandingPage />} />
         <Route path="/Help" element={<Help />} />
         <Route path="/About" element={<About />} />
         <Route path="/Privacy" element={<Privacy />} />
-        <Route path="/Home" element={<Home />} />
->>>>>>> ef5bf031bc521af41557e64796ffa16f1c4cfa80
+        <Route path="/Term" element={<Term />} /> {/* Keep this route */}
+        <Route path="/CompressImage" element={<CompressImage />} /> {/* Keep this route */}
+        <Route path="/Home" element={<Home />} /> {/* Keep this route */}
+        <Route path="/ResizeImage" element={<ResizeImage />} /> {/* Keep this route */}
+        <Route path="/CropImage" element={<CropImage />} /> {/* Keep this route */}
+        <Route path="/ConvertImage" element={<ConvertImage />} /> {/* Keep this route */}
+        <Route path="/WaterMarkImage" element={<WaterMarkImage />} /> {/* Keep this route */}
+        <Route path="/RotateImage" element={<RotateImage />} /> {/* Keep this route */}
+        <Route path="/HtmlImage" element={<HtmlImage />} /> {/* Keep this route */}
       </Routes>
     </BrowserRouter>
   );
