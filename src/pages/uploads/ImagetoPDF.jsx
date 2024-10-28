@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../components/img/background.svg";
-import Header from "../../components/Home/header";
+import Header from "../../components/Home/Header";
 
 const FileItem = ({ file, index, moveFile, removeFile }) => {
   const [, ref] = useDrag({

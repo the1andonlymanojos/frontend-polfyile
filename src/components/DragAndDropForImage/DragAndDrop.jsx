@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import backgroundImage from "../img/background.svg"; // Adjust the import path as necessary
+import backgroundImage from "../../components/img/background.svg";
 import Header from "../Home/Header";
 import browserImageCompression from 'browser-image-compression';
 

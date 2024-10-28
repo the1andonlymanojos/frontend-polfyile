@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import axios from 'axios';
-import backgroundImage from "../img/background.svg"; // Adjust the path to your background image
-import Header from "../../components/Home/Header"; // Adjust the path to your Header component
+import backgroundImage from "../../components/img/background.svg";
+import Header from "../Home/Header";
 
 const HtmlToImageFromUrlApp = () => {
   const [url, setUrl] = useState('');

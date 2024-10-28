@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import backgroundImage from "../../components/img/background.svg";
-import Header from "../../components/Home/header";
+import Header from "../../components/Home/Header";
 
 function AddWatermark() {
   const [file, setFile] = useState(null);
+  const [watermarkText, setWatermarkText] = useState("");
+  const [opacity, setOpacity] = useState(50); // Default opacity level
+  const [position, setPosition] = useState("center");
   const [convertedFileUrl, setConvertedFileUrl] = useState(null);
 
   const handleFileInput = (event) => {
@@ -23,6 +26,9 @@ function AddWatermark() {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("watermarkText", watermarkText);
+    formData.append("opacity", opacity);
+    formData.append("position", position);
 
     try {
       const response = await fetch("YOUR_BACKEND_AddWatermark_URL", {
@@ -32,10 +38,10 @@ function AddWatermark() {
 
       if (response.ok) {
         const data = await response.json();
-        setConvertedFileUrl(data.AddWatermarkUrl); // Assuming the response returns a URL for the AddWatermark files
-        alert("Watermark Added successfully!");
+        setConvertedFileUrl(data.AddWatermarkUrl); // Assuming the response returns a URL for the watermarked file
+        alert("Watermark added successfully!");
       } else {
-        alert("Failed to add Watermark");
+        alert("Failed to add watermark");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -80,6 +86,53 @@ function AddWatermark() {
           </div>
         )}
 
+        {/* Watermark Text Input */}
+        <div className="mt-6 w-full md:w-1/2  text-center">
+          <label className="text-gray-700 text-lg mb-2 block">
+            Watermark Text:
+          </label>
+          <input
+            type="text"
+            value={watermarkText}
+            onChange={(e) => setWatermarkText(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg"
+            placeholder="Enter watermark text"
+          />
+        </div>
+
+        {/* Opacity Level Slider */}
+        <div className="flex flex-col items-center mt-6 w-full md:w-1/2 lg:w-1/3">
+          <label className="text-gray-700 text-lg mb-2">
+            Opacity Level: {opacity}%
+          </label>
+          <input
+            type="range"
+            min="10"
+            max="100"
+            value={opacity}
+            onChange={(e) => setOpacity(e.target.value)}
+            className="w-full"
+          />
+        </div>
+
+        {/* Position Dropdown */}
+        <div className="mt-6 w-full md:w-1/2 lg:w-1/3 text-center">
+          <label className="text-gray-700 text-lg mb-2 block">
+            Position:
+          </label>
+          <select
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg"
+          >
+            <option value="center">Center</option>
+            <option value="top-left">Top-left</option>
+            <option value="top-right">Top-right</option>
+            <option value="bottom-left">Bottom-left</option>
+            <option value="bottom-right">Bottom-right</option>
+          </select>
+        </div>
+
         <button
           onClick={handleUpload}
           className="mt-8 bg-green-500 text-white px-20 py-3 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-xl"
@@ -94,7 +147,7 @@ function AddWatermark() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Download Converted File
+              Download Watermarked File
             </a>
           </div>
         )}

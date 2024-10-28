@@ -7,14 +7,14 @@ import backgroundImage from "../components/img/background.svg";
 const LandingPage = () => {
   return (
     <div
-      className="flex overflow-hidden flex-col bg-white bg-cover bg-no-repeat"
+      className="flex overflow-hidden flex-col bg-white bg-cover bg-no-repeat min-h-screen"
       style={{
         backgroundImage: `url(${backgroundImage})`, // Correctly reference the imported image
-        marginTop:`50px`
+        marginTop: `50px`,
       }}
     >
       <Header />
-      <main>
+      <main className="flex-grow"> {/* Allows the main content to grow and fill the available space */}
         <Hero />
       </main>
       <Footer />

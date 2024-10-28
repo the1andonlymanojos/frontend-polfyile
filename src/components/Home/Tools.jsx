@@ -8,7 +8,7 @@ function Tools() {
           class="tools__item "
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/compress-image" title="Compress IMAGE">
+          <a href="/CompressImage" title="Compress IMAGE">
             <div class="tools__item__icon">
               <svg
                 width="60"
@@ -41,7 +41,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/resize-image" title="Resize IMAGE">
+          <a href="/ResizeImage" title="Resize IMAGE">
             <div class="tools__item__icon">
               <svg viewBox="0 0 48 48" width="60" height="60" fill="none">
                 <path
@@ -82,7 +82,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/crop-image" title="Crop IMAGE">
+          <a href="/CropImage" title="Crop IMAGE">
             <div class="tools__item__icon">
               <svg
                 width="60"
@@ -114,7 +114,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/convert-to-jpg" title="Convert to JPG">
+          <a href="/ConvertImage" title="Convert to JPG">
             <div class="tools__item__icon">
               <svg viewBox="0 0 48 48" width="60" height="60" fill="none">
                 <path
@@ -154,7 +154,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/jpg-to-image" title="Convert from JPG">
+          <a href="/SvgImage" title="Convert from SVG">
             <div class="tools__item__icon">
               <svg viewBox="0 0 48 48" width="60" height="60" fill="none">
                 <path
@@ -195,7 +195,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/watermark-image" title="Watermark IMAGE">
+          <a href="/WaterMarkImage" title="Watermark IMAGE">
             <div class="tools__item__icon">
               <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                 <g clip-path="url(#a)">
@@ -232,7 +232,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/rotate-image" title="Rotate IMAGE">
+          <a href="/RotateImage" title="Rotate IMAGE">
             <div class="tools__item__icon">
               <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
                 <path
@@ -271,7 +271,7 @@ function Tools() {
           class="tools__item"
           style={{ minHeight: "300px", minWidth: "450px" }}
         >
-          <a href="/html-to-image" title="HTML to IMAGE">
+          <a href="/HtmlImage" title="HTML to IMAGE">
             <div class="tools__item__icon">
               <svg viewBox="0 0 48 48" width="60" height="60" fill="none">
                 <g clip-path="url(#a)">

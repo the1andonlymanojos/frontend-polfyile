@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import backgroundImage from "../../components/img/background.svg";
-import Header from "../../components/Home/header";
+import Header from "../../components/Home/Header";
 
 function ProtectPDF() {
   const [file, setFile] = useState(null);

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import backgroundImage from "../../components/img/background.svg";
-import Header from "../../components/Home/header";
+import Header from "../../components/Home/Header";
 
 function CompressPDF() {
   const [file, setFile] = useState(null);
+  const [compressionLevel, setCompressionLevel] = useState(50); // Default compression level
   const [convertedFileUrl, setConvertedFileUrl] = useState(null);
 
   const handleFileInput = (event) => {
@@ -23,6 +24,7 @@ function CompressPDF() {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("compressionLevel", compressionLevel); // Add compression level to the form data
 
     try {
       const response = await fetch("YOUR_BACKEND_COMPRESS_URL", {
@@ -32,7 +34,7 @@ function CompressPDF() {
 
       if (response.ok) {
         const data = await response.json();
-        setConvertedFileUrl(data.compressFileUrl); // Assuming the response returns a URL for the compress files
+        setConvertedFileUrl(data.compressFileUrl); // Assuming the response returns a URL for the compressed file
         alert("PDF compressed successfully!");
       } else {
         alert("Failed to compress PDF");
@@ -79,6 +81,21 @@ function CompressPDF() {
             <p className="text-gray-600">Selected File: {file.name}</p>
           </div>
         )}
+
+        {/* Compression Level Slider */}
+        <div className="flex flex-col items-center mt-8">
+          <label className="text-gray-700 text-lg mb-2">
+            Select Compression Level: {compressionLevel}%
+          </label>
+          <input
+            type="range"
+            min="10"
+            max="100"
+            value={compressionLevel}
+            onChange={(e) => setCompressionLevel(e.target.value)}
+            className="w-full md:w-1/2 lg:w-1/3"
+          />
+        </div>
 
         <button
           onClick={handleUpload}

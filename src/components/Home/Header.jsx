@@ -1,26 +1,21 @@
 import React, { useState } from "react";
-import "./Home.css";
+import "./Home.css"; // You can remove this if you no longer use external CSS.
 
 function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpenPdf, setIsDropdownOpenPdf] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-  // Function to toggle dropdown on hover
   const toggleDropdown = (dropdownType) => {
     if (dropdownType === "pdf") {
       setIsDropdownOpenPdf((prev) => {
-        if (prev) {
-          return false;
-        }
+        if (prev) return false;
         setIsDropdownOpen(false);
         return true;
       });
     } else {
       setIsDropdownOpen((prev) => {
-        if (prev) {
-          return false;
-        }
+        if (prev) return false;
         setIsDropdownOpenPdf(false);
         return true;
       });
@@ -31,19 +26,18 @@ function Header() {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
-  // Reusable Dropdown Component
   const DropdownMenu = ({ isOpen, items }) =>
     isOpen && (
       <div
-        className="absolute mt-9 w-52 bg-white rounded-md shadow-lg"
-        style={{ width: "600px", left: "0", transform: "translateX(-10%)" }}
+        className="absolute mt-9 bg-white rounded-md shadow-lg left-0 transform -translate-x-1/4 md:translate-x-0 w-3/4 md:w-52 lg:w-[600px] overflow-hidden"
       >
-        <ul className="grid grid-cols-4 gap-3 py-1 text-black">
+        <ul className="grid grid-cols-2 md:grid-cols-4 gap-3 py-1 text-black overflow-auto">
           {items.map((item, index) => (
             <li key={index}>
               <a
                 href={item.link}
-                className="block px-2 py-2 text-center hover:bg-gray-500 hover:text-white"
+                className="block px-2 py-2 text-center hover:bg-gray-500 hover:text-white truncate"
+                style={{ maxWidth: "100%" }}
               >
                 {item.label}
               </a>
@@ -53,47 +47,36 @@ function Header() {
       </div>
     );
 
-  // Dropdown data
   const pdfTools = [
-    { label: "Convert to PDF", link: "/convert-to-pdf" },
-    { label: "Merge PDF", link: "/merge-pdf" },
-    { label: "Compress PDF", link: "/compress-pdf" },
-    { label: "Sign PDF", link: "/sign-pdf" },
-    { label: "Unlock PDF", link: "/unlock-pdf" },
-    { label: "Annotate PDF", link: "/annotate-pdf" },
-    { label: "Watermark PDF", link: "/watermark-pdf" },
-    { label: "PDF to Word", link: "/convert-to-word" },
-    { label: "PDF to Text", link: "/convert-from-pdf" },
-    { label: "Extract Pages", link: "/extract-pages" },
-    { label: "Batch Convert", link: "/batch-convert-pdf" },
-    { label: "HTML to PDF", link: "/html-to-pdf" },
-    { label: "PDF to PPT", link: "/convert-pdf-ppt" },
-    { label: "Embed PDF", link: "/embed-pdf" },
-    { label: "Doc to PDF", link: "/convert-doc-to-pdf" },
-    { label: "PDF to HTML", link: "/convert-pdf-html" },
+    { label: "Merge PDF", link: "/MergePDF" },
+    { label: "Compress PDF", link: "/CompressPDF" },
+    { label: "Split PDF", link: "/HtmltoPDF" },
+    { label: "Watermark PDF", link: "/AddWatermark" },
+    { label: "HTML to PDF", link: "/HtmltoPDF" },
+    { label: "JPG to PDF", link: "/ImagetoPDF" },
+    { label: "Doc to PDF", link: "/WordtoPDF" },
+    { label: "Protect PDF", link: "/ProtectPDF" },
+    { label: "PDF to JPG", link: "/PDFtoImage" },
+    { label: "Sign PDF", link: "/CompressPDF" },
+    { label: "Unlock PDF", link: "/CompressPDF" },
+    { label: "Rotate PDF", link: "/WatermarkPDF" },
   ];
 
   const imageTools = [
     { label: "Compress Image", link: "/CompressImage" },
     { label: "Resize Image", link: "/ResizeImage" },
     { label: "Crop Image", link: "/CropImage" },
-    { label: "Convert Image", link:"/ConvertImage" },
+    { label: "Convert Image", link: "/ConvertImage" },
     { label: "Watermark", link: "/WaterMarkImage" },
     { label: "Rotate Image", link: "/RotateImage" },
     { label: "HTML to Image", link: "/HtmlImage" },
-     { label: "SvgToOther", link: "/SvgImage" },
+    { label: "SvgToOther", link: "/SvgImage" },
   ];
-
-  const links = imageTools
-  .map(tool => `<a href="/_${tool.link}">${tool.label}</a>`)
-  .join("<br>");
-
 
   return (
     <div>
-      <header className="header">
-        <nav className="flex items-center bg-white position-relative">
-          {/* Brand Section */}
+      <header className="bg-white w-full h-[100px] fixed top-0 left-0 right-0 z-40 shadow-md px-6 md:px-12">
+        <nav className="flex items-center h-full">
           <a className="flex items-center" href="/Home" title="PolyFile">
             <img
               loading="lazy"
@@ -102,23 +85,22 @@ function Header() {
               className="object-contain shrink-0 aspect-[1.02] w-[80px] mt-2.5"
             />
             <h1
-              className="ml-2 mt-2 text-5xl font-bold"
+              className="ml-2 mt-2 text-2xl md:text-3xl font-bold"
               style={{ fontFamily: "'DM Serif Text', serif" }}
             >
               POLYFILE
             </h1>
           </a>
 
-          {/* PDF Tools Dropdown */}
           <div className="relative group">
             <button
-              className={`flex ml-20 text-2xl px-6 py-3 rounded-md mt-1.5
-              ${isDropdownOpenPdf ? "text-sky-500 " : "text-grey-100"}`}
+              className={`flex ml-20 text-xl md:text-2xl px-4 md:px-6 py-3 rounded-md mt-1.5
+              ${isDropdownOpenPdf ? "text-sky-500" : "text-grey-100"}`}
               onClick={() => toggleDropdown("pdf")}
             >
               All PDF Tools
               <span
-                className={`ml-2 ${isDropdownOpenPdf ? "rotate-0" : "rotate-180"}`}
+                className={`ml-2 transition-transform duration-200 ${isDropdownOpenPdf ? "rotate-0" : "rotate-180"}`}
               >
                 &#9662;
               </span>
@@ -126,16 +108,15 @@ function Header() {
             <DropdownMenu isOpen={isDropdownOpenPdf} items={pdfTools} />
           </div>
 
-          {/* Image Tools Dropdown */}
           <div className="relative group">
             <button
-              className={`flex ml-3 text-2xl text-grey-100 px-6 py-3 rounded-md mt-1.5 
-              ${isDropdownOpen ? "text-sky-500 " : "text-grey-100"}`}
+              className={`flex ml-3 text-xl md:text-2xl text-grey-100 px-4 md:px-6 py-3 rounded-md mt-1.5 
+              ${isDropdownOpen ? "text-sky-500" : "text-grey-100"}`}
               onClick={() => toggleDropdown("image")}
             >
               All Image Tools
               <span
-                className={`ml-2 ${isDropdownOpen ? "rotate-0" : "rotate-180"}`}
+                className={`ml-2 transition-transform duration-200 ${isDropdownOpen ? "rotate-0" : "rotate-180"}`}
               >
                 &#9662;
               </span>
@@ -143,13 +124,12 @@ function Header() {
             <DropdownMenu isOpen={isDropdownOpen} items={imageTools} />
           </div>
 
-          {/* Profile Section */}
           <div
             className="relative group ml-auto"
             onMouseEnter={toggleProfileDropdown}
             onMouseLeave={toggleProfileDropdown}
           >
-            <button className="flex text-2xl text-grey-100 px-6 py-3 rounded-md hover:text-sky-500 mt-1.5">
+            <button className="flex text-xl md:text-2xl text-grey-100 px-4 md:px-6 py-3 rounded-md hover:text-sky-500 mt-1.5">
               <i className="fas fa-user-circle fa-2xl mr-0 m-auto"></i>
               <span className="ml-2">
                 {isProfileDropdownOpen ? (
