@@ -16,6 +16,17 @@ import SplitPDF from "./pages/uploads/SplitPDF";
 import CompressPDF from "./pages/uploads/CompressPDF";
 import AddWatermark from "./pages/uploads/AddWatermark";
 
+import CompressImage from "./components/DragAndDropForImage/DragAndDrop"; // Keep this import
+
+import ResizeImage from "./components/DragAndDropForImage/Resize"; // Keep this import
+import CropImage from "./components/DragAndDropForImage/Crop"; // Keep this import
+import ConvertImage from "./components/DragAndDropForImage/ConvertImage";
+import WaterMarkImage from "./components/DragAndDropForImage/WaterMark";
+import RotateImage from "./components/DragAndDropForImage/Rotate";
+import HtmlImage from "./components/DragAndDropForImage/HtmlToImage";
+import SvgToOther from "./components/DragAndDropForImage/SvgToOther";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +46,16 @@ function App() {
         <Route path="/SplitPDF" element={<SplitPDF />} />
         <Route path="/CompressPDF" element={<CompressPDF />} />
         <Route path="/AddWatermark" element={<AddWatermark />} />
+        
+        <Route path="/CompressImage" element={<CompressImage />} /> {/* Keep this route */}
+        
+        <Route path="/ResizeImage" element={<ResizeImage />} /> {/* Keep this route */}
+        <Route path="/CropImage" element={<CropImage />} /> {/* Keep this route */}
+        <Route path="/ConvertImage" element={<ConvertImage />} /> {/* Keep this route */}
+        <Route path="/WaterMarkImage" element={<WaterMarkImage />} /> {/* Keep this route */}
+        <Route path="/RotateImage" element={<RotateImage />} /> {/* Keep this route */}
+        <Route path="/HtmlImage" element={<HtmlImage />} /> {/* Keep this route */}
+        <Route path="/SvgImage" element={<SvgToOther />} /> {/* Keep this route */}
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import backgroundImage from "../components/img/background.svg"; 
-import Header from "../components/landingpage/header";
+import backgroundImage from "../components/img/background.svg"; // Ensure this path is correct
+import Header from "../components/Home/Header";
+import Footer from "../components/landingpage/Helpfooter";
 
 const Term = () => {
     const [activeSection, setActiveSection] = useState('');
@@ -215,6 +216,7 @@ iLovePDF, in case of advance signature, provides a detailed audit trail, timesta
 iLovePDF is at disposition to provide the advanced electronically signed document as well as audit trail if required by a court of law (and in case iLovePDF still preserves this information), yet exempts itself from prosecution if the document is not upheld or found lacking.</p>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
