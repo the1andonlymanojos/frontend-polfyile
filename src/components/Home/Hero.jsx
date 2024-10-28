@@ -16,7 +16,22 @@ const Hero = () => {
         </div>
 
         <TextParallaxContentExample />
+        
+        <div className="text-center mt-20 mb-10">
+          <h2 className=" text-5xl  bg-clip-text ">
+            Image Tools
+          </h2>
+        </div>
+
         <Tools />
+
+        <div className="text-center mt-20 mb-10">
+          <h2 className=" text-5xl  bg-clip-text ">
+            PDF Tools
+          </h2>
+        </div>
+
+        <Tools/>
 
         <div className=" relative mt-40 py-[0px] px-[45px] text-center h-[250px]">
           <h1 className="font-semibold text-6xl leading-tight text-[#33333b] text-center mx-auto mb-3">
