@@ -1,7 +1,7 @@
 import React from "react";
-import Footer from "../components/landingpage/Helpfooter"; // Keep this import
-import Hero from "../components/landingpage/AboutMain"; // Keep this import
-import Header from "../components/landingpage/header"; // Keep this import
+import Footer from "../components/landingpage/Helpfooter";
+import Hero from "../components/landingpage/AboutMain";
+import Header from "../components/landingpage/header";
 import backgroundImage from "../components/img/background.svg";
 
 const About = () => {

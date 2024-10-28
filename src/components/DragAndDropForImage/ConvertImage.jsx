@@ -1,69 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import backgroundImage from "../img/background.svg";
 import Header from "../../components/Home/Header";
-import Cropper from 'react-easy-crop';
 
-// Utility function to handle image cropping
-const getCroppedImg = async (imageSrc, crop) => {
-  const image = new Image();
-  image.src = imageSrc;
-  await new Promise((resolve) => (image.onload = resolve));
-
-  const canvas = document.createElement('canvas');
-  canvas.width = crop.width;
-  canvas.height = crop.height;
-  const ctx = canvas.getContext('2d');
-
-  ctx.drawImage(
-    image,
-    crop.x,
-    crop.y,
-    crop.width,
-    crop.height,
-    0,
-    0,
-    crop.width,
-    crop.height
-  );
-
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      const fileUrl = URL.createObjectURL(blob);
-      resolve(fileUrl);
-    }, 'image/png');
-  });
-};
-
-// Function to convert image to different formats
-const convertImage = (file, format) => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const image = new Image();
-      image.src = event.target.result;
-      image.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(image, 0, 0);
-
-        canvas.toBlob((blob) => {
-          const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, `.${format}`), {
-            type: `image/${format}`,
-          });
-          const fileUrl = URL.createObjectURL(newFile);
-          resolve({ newFile, fileUrl });
-        }, `image/${format}`);
-      };
-    };
-    reader.readAsDataURL(file);
-  });
-};
-
-const FileItem = ({ file, index, moveFile, removeFile, selectForCropping, isCropping, convertFile }) => {
+const FileItem = ({ file, index, moveFile, removeFile, convertImage, conversionStatus, downloadUrl }) => {
   const [, ref] = useDrag({
     type: 'file',
     item: { index },
@@ -83,70 +24,57 @@ const FileItem = ({ file, index, moveFile, removeFile, selectForCropping, isCrop
     <div
       ref={(node) => ref(drop(node))}
       className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
-      onClick={() => !isCropping && selectForCropping(file)}
     >
-      {file.preview ? (
+      {file.type.startsWith('image/') ? (
         <img
-          src={file.preview}
+          src={URL.createObjectURL(file)}
           alt={file.name}
           className="w-full h-full object-cover rounded-lg"
         />
       ) : (
         <p className="text-gray-800 text-sm truncate">{file.name}</p>
       )}
-      <select onChange={(e) => convertFile(file, e.target.value)} className="absolute bottom-1 left-1">
-        <option value="">Convert to...</option>
-        <option value="png">PNG</option>
-        <option value="jpg">JPG</option>
-        <option value="gif">GIF</option>
-      </select>
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          removeFile(index);
-        }}
+        onClick={() => removeFile(index)}
         className="absolute top-1 right-1 text-red-500 hover:text-red-700"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
+        {/* Delete icon */}
       </button>
+      <button
+        onClick={() => convertImage(file, index)}
+        className="mt-2 bg-blue-500 text-white px-2 py-1 rounded text-xs"
+      >
+        Convert
+      </button>
+      {conversionStatus && <p className="text-xs mt-1 text-blue-600">{conversionStatus}</p>}
+      {downloadUrl && (
+        <a
+          href={downloadUrl}
+          download={`converted_${file.name}`}
+          className="text-blue-500 hover:text-blue-700 text-xs mt-2"
+        >
+          Download
+        </a>
+      )}
     </div>
   );
 };
 
-function Drag() {
+function DragAndConvertApp() {
   const [files, setFiles] = useState([]);
-  const [croppingFile, setCroppingFile] = useState(null);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [convertedFiles, setConvertedFiles] = useState([]);
+  const [convertToFormat, setConvertToFormat] = useState('jpeg');
+  const [conversionStatus, setConversionStatus] = useState(null);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files).filter((file) => file.type.startsWith('image/'));
-    const filesWithPreview = selectedFiles.map((file) => ({
-      ...file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...filesWithPreview]);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const droppedFiles = Array.from(event.dataTransfer.files).filter((file) => file.type.startsWith('image/'));
-    const filesWithPreview = droppedFiles.map((file) => ({
-      ...file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...filesWithPreview]);
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
+    setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
   };
 
   const removeFile = (indexToRemove) => {
@@ -162,36 +90,54 @@ function Drag() {
     });
   };
 
-  const selectForCropping = (file) => {
-    setCroppingFile(file);
-  };
+  const convertImage = async (file, index) => {
+    setConversionStatus("Converting...");
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
-
-  const cropImage = async () => {
     try {
-      const croppedImage = await getCroppedImg(croppingFile.preview, croppedAreaPixels);
-      setFiles((prevFiles) =>
-        prevFiles.map((file) => (file === croppingFile ? { ...file, preview: croppedImage } : file))
-      );
-      setCroppingFile(null);
-      alert('Image cropped successfully!');
+      const originalImg = new Image();
+      originalImg.src = URL.createObjectURL(file);
+
+      originalImg.onload = async () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = originalImg.width;
+        canvas.height = originalImg.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(originalImg, 0, 0);
+
+        canvas.toBlob((blob) => {
+          const convertedFile = new File([blob], `converted_${file.name.split('.')[0]}.${convertToFormat}`, { type: `image/${convertToFormat}` });
+          const downloadUrl = URL.createObjectURL(blob);
+
+          setConvertedFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = { convertedFile, downloadUrl };
+            return updatedFiles;
+          });
+          setConversionStatus(`Converted to ${convertToFormat.toUpperCase()}`);
+        }, `image/${convertToFormat}`);
+      };
     } catch (error) {
-      console.error("Error cropping image:", error);
+      console.error("Error converting image:", error);
+      setConversionStatus("Conversion failed");
     }
   };
 
-  const convertFile = async (file, format) => {
-    if (!format) return; // No format selected
-    const { newFile, fileUrl } = await convertImage(file, format);
+  const convertAllImages = () => {
+    files.forEach((file, index) => {
+      convertImage(file, index);
+    });
+  };
 
-    // Add the converted file to the files state
-    setFiles((prevFiles) => [
-      ...prevFiles,
-      { ...newFile, preview: fileUrl },
-    ]);
+  const downloadAllImages = () => {
+    convertedFiles.forEach((fileData, index) => {
+      const link = document.createElement("a");
+      link.href = fileData.downloadUrl;
+      link.download = fileData.convertedFile.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
   };
 
   return (
@@ -203,34 +149,63 @@ function Drag() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Image Upload with Cropping & Reordering</h2>
-
-          <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-          >
-            <p className="text-gray-600 text-center">Drag & Drop files here</p>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFiles}
-              className="hidden"
-              id="fileInput"
-            />
-          </div>
-
-          <label
-            htmlFor="fileInput"
-            className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer"
-          >
-            Upload Images
-          </label>
+        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Convert Image</h2>
+        <p className="text-xl pb-6 mb-5">
+          Convert images to JPG, PNG, or GIF format.
+        </p>
+        <div
+          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <p className="text-gray-600 text-center">Drag & Drop files here</p>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFiles}
+            className="hidden"
+            id="fileInput"
+          />
         </div>
 
-        <div className="flex flex-wrap justify-center mt-6">
+        <label
+          htmlFor="fileInput"
+          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
+        >
+          Or Click to Select Files
+        </label>
+
+        <div className="mt-4 flex gap-4 items-center">
+          <label htmlFor="convertToFormat" className="text-gray-700">Convert to Format:</label>
+          <select
+            id="convertToFormat"
+            value={convertToFormat}
+            onChange={(e) => setConvertToFormat(e.target.value)}
+            className="p-1 border rounded"
+          >
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="gif">GIF</option>
+          </select>
+        </div>
+
+        <button
+          onClick={convertAllImages}
+          className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition ease-in-out duration-300"
+        >
+          Convert All Images
+        </button>
+
+        <button
+          onClick={downloadAllImages}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition ease-in-out duration-300"
+          disabled={convertedFiles.length === 0}
+        >
+          Download All Images
+        </button>
+
+        <div className="mt-9 grid grid-cols-3 gap-4">
           {files.map((file, index) => (
             <FileItem
               key={index}
@@ -238,41 +213,15 @@ function Drag() {
               file={file}
               moveFile={moveFile}
               removeFile={removeFile}
-              selectForCropping={selectForCropping}
-              isCropping={!!croppingFile}
-              convertFile={convertFile}
+              convertImage={convertImage}
+              conversionStatus={conversionStatus}
+              downloadUrl={convertedFiles[index]?.downloadUrl}
             />
           ))}
         </div>
-
-        {croppingFile && (
-          <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl mb-2">Crop Image</h3>
-              <Cropper
-                image={croppingFile.preview}
-                crop={crop}
-                zoom={zoom}
-                aspect={4 / 3}
-                onCropChange={setCrop}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-              />
-              <button onClick={cropImage} className="mt-4 bg-green-500 text-white px-4 py-2 rounded">
-                Crop
-              </button>
-              <button
-                onClick={() => setCroppingFile(null)}
-                className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </DndProvider>
   );
 }
 
-export default Drag;
+export default DragAndConvertApp;

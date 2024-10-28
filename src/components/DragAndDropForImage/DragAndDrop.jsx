@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import backgroundImage from "../img/background.svg"; // Adjust the import path as necessary
-import Header from "../../components/Home/Header";
-import browserImageCompression from 'browser-image-compression'; // For image compression
+import Header from "../Home/Header";
+import browserImageCompression from 'browser-image-compression';
 
 const FileItem = ({ file, index, removeFile, compressedData }) => {
   const [, ref] = useDrag({
@@ -52,6 +52,14 @@ const FileItem = ({ file, index, removeFile, compressedData }) => {
           <p>{`Original: ${(compressedData.originalSize / 1024).toFixed(2)} KB`}</p>
           <p>{`Compressed: ${(compressedData.compressedSize / 1024).toFixed(2)} KB`}</p>
           <p>{`Saved: ${compressedData.savedPercentage}%`}</p>
+          {/* Download button for individual files */}
+          <a
+            href={compressedData.downloadUrl}
+            download={file.name.replace(/\.[^/.]+$/, "_compressed.jpg")} // Adjust file extension as necessary
+            className="text-blue-500 hover:text-blue-700 text-xs mt-2"
+          >
+            Download
+          </a>
         </div>
       )}
     </div>
@@ -61,7 +69,9 @@ const FileItem = ({ file, index, removeFile, compressedData }) => {
 function Drag() {
   const [files, setFiles] = useState([]);
   const [compressedFilesData, setCompressedFilesData] = useState([]);
-  const [compressionQuality, setCompressionQuality] = useState(0.8); // Compression quality (0-1)
+  const [compressionQuality, setCompressionQuality] = useState(0.8);
+  const [downloadLinks, setDownloadLinks] = useState([]);
+  const [isCompressed, setIsCompressed] = useState(false);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files).filter((file) => file.type.startsWith('image/'));
@@ -80,6 +90,7 @@ function Drag() {
 
   const removeFile = (indexToRemove) => {
     setFiles((prevFiles) => prevFiles.filter((_, index) => index !== indexToRemove));
+    setDownloadLinks((prevLinks) => prevLinks.filter((_, index) => index !== indexToRemove));
   };
 
   const moveFile = (fromIndex, toIndex) => {
@@ -101,14 +112,21 @@ function Drag() {
       };
       const compressedFile = await browserImageCompression(file, options);
       const savedPercentage = ((file.size - compressedFile.size) / file.size * 100).toFixed(2);
+      
+      const compressedBlob = new Blob([compressedFile], { type: compressedFile.type });
+      const downloadUrl = URL.createObjectURL(compressedBlob);
+
       return {
         originalSize: file.size,
         compressedSize: compressedFile.size,
         savedPercentage,
+        downloadUrl,
       };
     }));
 
     setCompressedFilesData(compressedDataArray);
+    setDownloadLinks(compressedDataArray.map((data) => data.downloadUrl));
+    setIsCompressed(true);
   };
 
   return (
@@ -181,6 +199,16 @@ function Drag() {
           >
             Compress All
           </button>
+
+          {isCompressed && (
+            <a
+              href={downloadLinks.length > 0 ? downloadLinks[0] : '#'}
+              download="compressed_images.zip"
+              className={`mt-6 bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 ${downloadLinks.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              Download All
+            </a>
+          )}
         </div>
       </div>
     </DndProvider>

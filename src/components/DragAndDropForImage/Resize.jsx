@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import pica from 'pica'; // For image resizing
 import backgroundImage from "../img/background.svg";
 import Header from "../../components/Home/Header";
 
-const FileItem = ({ file, index, moveFile, removeFile, resizeImage, resizingStatus }) => {
+const FileItem = ({ file, index, moveFile, removeFile, resizeImage, resizingStatus, downloadUrl }) => {
   const [, ref] = useDrag({
     type: 'file',
     item: { index },
@@ -48,6 +47,15 @@ const FileItem = ({ file, index, moveFile, removeFile, resizeImage, resizingStat
         Resize
       </button>
       {resizingStatus && <p className="text-xs mt-1 text-blue-600">{resizingStatus}</p>}
+      {downloadUrl && (
+        <a
+          href={downloadUrl}
+          download={`resized_${file.name}`}
+          className="text-blue-500 hover:text-blue-700 text-xs mt-2"
+        >
+          Download
+        </a>
+      )}
     </div>
   );
 };
@@ -55,8 +63,7 @@ const FileItem = ({ file, index, moveFile, removeFile, resizeImage, resizingStat
 function DragAndResizeApp() {
   const [files, setFiles] = useState([]);
   const [resizedFiles, setResizedFiles] = useState([]);
-  const [targetWidth, setTargetWidth] = useState(800);
-  const [targetHeight, setTargetHeight] = useState(null);
+  const [resizePercentage, setResizePercentage] = useState(100);
   const [resizingStatus, setResizingStatus] = useState(null);
 
   const handleFiles = (event) => {
@@ -92,17 +99,23 @@ function DragAndResizeApp() {
 
       originalImg.onload = async () => {
         const canvas = document.createElement("canvas");
-        const scaleFactor = targetWidth / originalImg.width;
+        const scaleFactor = resizePercentage / 100;
 
-        canvas.width = targetWidth;
-        canvas.height = targetHeight ? targetHeight : originalImg.height * scaleFactor;
+        canvas.width = originalImg.width * scaleFactor;
+        canvas.height = originalImg.height * scaleFactor;
 
-        const picaInstance = pica();
-        await picaInstance.resize(originalImg, canvas);
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(originalImg, 0, 0, canvas.width, canvas.height);
 
         canvas.toBlob((blob) => {
           const resizedFile = new File([blob], `resized_${file.name}`, { type: file.type });
-          setResizedFiles((prevFiles) => [...prevFiles, resizedFile]);
+          const downloadUrl = URL.createObjectURL(blob);
+
+          setResizedFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = { resizedFile, downloadUrl };
+            return updatedFiles;
+          });
           setResizingStatus(`Resized to ${canvas.width}x${canvas.height}px`);
         }, file.type);
       };
@@ -118,6 +131,17 @@ function DragAndResizeApp() {
     });
   };
 
+  const downloadAllImages = () => {
+    resizedFiles.forEach((fileData, index) => {
+      const link = document.createElement("a");
+      link.href = fileData.downloadUrl;
+      link.download = fileData.resizedFile.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
@@ -128,8 +152,9 @@ function DragAndResizeApp() {
         }}
       >
         <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Resize Image</h2>
-        <p className='text-xl pb-6 mb-5'>Resize JPG, PNG, SVG or GIF by defining new height and width pixels.
-          Change image dimensions in bulk.</p>
+        <p className="text-xl pb-6 mb-5">
+          Resize JPG, PNG, SVG, or GIF by specifying new dimensions in pixels or resizing by percentage.
+        </p>
         <div
           className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
           onDrop={handleDrop}
@@ -153,27 +178,17 @@ function DragAndResizeApp() {
           Or Click to Select Files
         </label>
 
-        <div className="mt-4 flex gap-4">
-          <div>
-            <label htmlFor="targetWidth" className="text-gray-700">Target Width:</label>
-            <input
-              type="number"
-              id="targetWidth"
-              value={targetWidth}
-              onChange={(e) => setTargetWidth(parseInt(e.target.value, 10))}
-              className="ml-2 p-1 border rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="targetHeight" className="text-gray-700">Target Height (optional):</label>
-            <input
-              type="number"
-              id="targetHeight"
-              value={targetHeight || ''}
-              onChange={(e) => setTargetHeight(e.target.value ? parseInt(e.target.value, 10) : null)}
-              className="ml-2 p-1 border rounded"
-            />
-          </div>
+        <div className="mt-4 flex gap-4 items-center">
+          <label htmlFor="resizePercentage" className="text-gray-700">Resize Percentage (0-200%):</label>
+          <input
+            type="number"
+            id="resizePercentage"
+            value={resizePercentage}
+            min={0}
+            max={200}
+            onChange={(e) => setResizePercentage(parseInt(e.target.value, 10))}
+            className="p-1 border rounded"
+          />
         </div>
 
         <button
@@ -181,6 +196,14 @@ function DragAndResizeApp() {
           className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition ease-in-out duration-300"
         >
           Resize All Images
+        </button>
+
+        <button
+          onClick={downloadAllImages}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition ease-in-out duration-300"
+          disabled={resizedFiles.length === 0}
+        >
+          Download All Images
         </button>
 
         <div className="mt-9 grid grid-cols-3 gap-4">
@@ -193,6 +216,7 @@ function DragAndResizeApp() {
               removeFile={removeFile}
               resizeImage={resizeImage}
               resizingStatus={resizingStatus}
+              downloadUrl={resizedFiles[index]?.downloadUrl}
             />
           ))}
         </div>

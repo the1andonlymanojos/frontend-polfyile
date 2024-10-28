@@ -81,7 +81,7 @@ function Header() {
     { label: "Watermark", link: "/WaterMarkImage" },
     { label: "Rotate Image", link: "/RotateImage" },
     { label: "HTML to Image", link: "/HtmlImage" },
-    // { label: "Convert Image", link: "/convert-image" },
+     { label: "SvgToOther", link: "/SvgImage" },
   ];
 
   const links = imageTools

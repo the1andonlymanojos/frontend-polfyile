@@ -1,42 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import backgroundImage from "../img/background.svg";
 import Header from "../../components/Home/Header";
-import Cropper from 'react-easy-crop';
 
-// Utility function to handle image cropping
-const getCroppedImg = async (imageSrc, crop) => {
-  const image = new Image();
-  image.src = imageSrc;
-  await new Promise((resolve) => (image.onload = resolve));
-
-  const canvas = document.createElement('canvas');
-  canvas.width = crop.width;
-  canvas.height = crop.height;
-  const ctx = canvas.getContext('2d');
-
-  ctx.drawImage(
-    image,
-    crop.x,
-    crop.y,
-    crop.width,
-    crop.height,
-    0,
-    0,
-    crop.width,
-    crop.height
-  );
-
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      const fileUrl = URL.createObjectURL(blob);
-      resolve(fileUrl);
-    }, 'image/png');
-  });
-};
-
-const FileItem = ({ file, index, moveFile, removeFile, selectForCropping }) => {
+const FileItem = ({ file, index, moveFile, removeFile, cropImage, cropStatus, downloadUrl }) => {
   const [, ref] = useDrag({
     type: 'file',
     item: { index },
@@ -55,12 +23,11 @@ const FileItem = ({ file, index, moveFile, removeFile, selectForCropping }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-52 h-52 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white cursor-pointer"
-      onClick={() => selectForCropping(file)}
+      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
-      {file.preview ? (
+      {file.type.startsWith('image/') ? (
         <img
-          src={file.preview}
+          src={URL.createObjectURL(file)}
           alt={file.name}
           className="w-full h-full object-cover rounded-lg"
         />
@@ -68,52 +35,45 @@ const FileItem = ({ file, index, moveFile, removeFile, selectForCropping }) => {
         <p className="text-gray-800 text-sm truncate">{file.name}</p>
       )}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          removeFile(index);
-        }}
+        onClick={() => removeFile(index)}
         className="absolute top-1 right-1 text-red-500 hover:text-red-700"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
+        {/* Delete icon */}
       </button>
+      <button
+        onClick={() => cropImage(file, index)}
+        className="mt-2 bg-blue-500 text-white px-2 py-1 rounded text-xs"
+      >
+        Crop
+      </button>
+      {cropStatus && <p className="text-xs mt-1 text-blue-600">{cropStatus}</p>}
+      {downloadUrl && (
+        <a
+          href={downloadUrl}
+          download={`cropped_${file.name}`}
+          className="text-blue-500 hover:text-blue-700 text-xs mt-2"
+        >
+          Download
+        </a>
+      )}
     </div>
   );
 };
 
-function Drag() {
+function DragAndCropApp() {
   const [files, setFiles] = useState([]);
-  const [croppingFile, setCroppingFile] = useState(null);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedFiles, setCroppedFiles] = useState([]);
+  const [cropStatus, setCropStatus] = useState(null);
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files).filter((file) => file.type.startsWith('image/'));
-    const filesWithPreview = selectedFiles.map((file) => ({
-      ...file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...filesWithPreview]);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const droppedFiles = Array.from(event.dataTransfer.files).filter((file) => file.type.startsWith('image/'));
-    const filesWithPreview = droppedFiles.map((file) => ({
-      ...file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...filesWithPreview]);
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
+    setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
   };
 
   const removeFile = (indexToRemove) => {
@@ -129,30 +89,55 @@ function Drag() {
     });
   };
 
-  const selectForCropping = (file) => {
-    setCroppingFile(file);
-  };
+  const cropImage = async (file, index) => {
+    setCropStatus("Cropping...");
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
-
-  const cropImage = async () => {
-    if (!croppingFile) return;
     try {
-      const croppedImage = await getCroppedImg(croppingFile.preview, croppedAreaPixels);
-      setFiles((prevFiles) =>
-        prevFiles.map((file) => (file === croppingFile ? { ...file, preview: croppedImage } : file))
-      );
-      alert('Image cropped successfully!');
+      const originalImg = new Image();
+      originalImg.src = URL.createObjectURL(file);
+
+      originalImg.onload = async () => {
+        const canvas = document.createElement("canvas");
+
+        // Crop dimensions
+        const cropX = originalImg.width * 0.1;
+        const cropY = originalImg.height * 0.1;
+        const cropWidth = originalImg.width * 0.8;
+        const cropHeight = originalImg.height * 0.8;
+
+        canvas.width = cropWidth;
+        canvas.height = cropHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(originalImg, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+
+        canvas.toBlob((blob) => {
+          const croppedFile = new File([blob], `cropped_${file.name}`, { type: file.type });
+          const downloadUrl = URL.createObjectURL(blob);
+
+          setCroppedFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = { croppedFile, downloadUrl };
+            return updatedFiles;
+          });
+          setCropStatus(`Cropped to ${cropWidth}x${cropHeight}px`);
+        }, file.type);
+      };
     } catch (error) {
       console.error("Error cropping image:", error);
+      setCropStatus("Crop failed");
     }
   };
 
-  const saveCroppedImage = () => {
-    setCroppingFile(null); // Close the cropping modal
-    setCroppedAreaPixels(null); // Reset cropped area
+  const downloadAllImages = () => {
+    croppedFiles.forEach((fileData, index) => {
+      const link = document.createElement("a");
+      link.href = fileData.downloadUrl;
+      link.download = fileData.croppedFile.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
   };
 
   return (
@@ -164,85 +149,58 @@ function Drag() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Image Upload with Cropping & Reordering</h2>
+        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Crop Image</h2>
+        <p className="text-xl pb-6 mb-5">
+          Crop JPG, PNG, SVG, or GIF by selecting crop areas.
+        </p>
+        <div
+          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <p className="text-gray-600 text-center">Drag & Drop files here</p>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFiles}
+            className="hidden"
+            id="fileInput"
+          />
+        </div>
 
-          <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-          >
-            <p className="text-gray-600 text-center">Drag & Drop files here</p>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFiles}
-              className="hidden"
-              id="fileInput"
+        <label
+          htmlFor="fileInput"
+          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
+        >
+          Or Click to Select Files
+        </label>
+
+        <button
+          onClick={downloadAllImages}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition ease-in-out duration-300"
+          disabled={croppedFiles.length === 0}
+        >
+          Download All Cropped Images
+        </button>
+
+        <div className="mt-9 grid grid-cols-3 gap-4">
+          {files.map((file, index) => (
+            <FileItem
+              key={index}
+              index={index}
+              file={file}
+              moveFile={moveFile}
+              removeFile={removeFile}
+              cropImage={cropImage}
+              cropStatus={cropStatus}
+              downloadUrl={croppedFiles[index]?.downloadUrl}
             />
-          </div>
-
-          <label
-            htmlFor="fileInput"
-            className="mt-9 bg-blue-500 text-white px-20 py-2 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
-          >
-            Or Click to Select Files
-          </label>
-
-          <div className="mt-9 grid grid-cols-3 gap-4">
-            {files.map((file, index) => (
-              <FileItem
-                key={index}
-                index={index}
-                file={file}
-                moveFile={moveFile}
-                removeFile={removeFile}
-                selectForCropping={selectForCropping}
-              />
-            ))}
-          </div>
-
-          {croppingFile && (
-            <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-              <div className="relative w-full max-w-md h-full max-h-md bg-white rounded-lg shadow-lg p-4 flex flex-col">
-                <h3 className="text-center text-gray-700 mb-2">Crop Image</h3>
-                <Cropper
-                  image={croppingFile.preview}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1} // Change aspect ratio as needed
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                />
-                <div className="flex justify-between mt-4">
-                  <button
-                    onClick={() => setCroppingFile(null)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={cropImage}
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Crop
-                  </button>
-                  <button
-                    onClick={saveCroppedImage}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </DndProvider>
   );
 }
 
-export default Drag;
+export default DragAndCropApp;
