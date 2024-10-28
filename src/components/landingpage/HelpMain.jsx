@@ -4,8 +4,8 @@ import React from 'react';
 const UserGuidePage = () => {
   return (
     <div className="container mx-auto py-16 ">
-      <h1 className="text-7xl font-bold text-center mb-8">Welcome to our user's guide</h1>
-      <p className="text-2xl text-center mb-12 pb-10">
+      <h1 className="text-7xl font-bold text-center mb-8 mt-10">Welcome to our user's guide</h1>
+      <p className="text-2xl text-center mb-1 pb-10">
         Although we've tried to make it really simple, here's a short guidance to help you through the editing process.
       </p>
 
