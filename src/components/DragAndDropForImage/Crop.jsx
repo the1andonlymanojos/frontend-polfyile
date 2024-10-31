@@ -3,6 +3,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import backgroundImage from "../../components/img/background.svg";
 import Header from "../Home/Header";
+import ImageCropper from "../image-cropthing.jsx";
 
 const FileItem = ({ file, index, moveFile, removeFile, cropImage, cropStatus, downloadUrl }) => {
   const [, ref] = useDrag({
@@ -143,62 +144,7 @@ function DragAndCropApp() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
-      <div
-        className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      >
-        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Crop Image</h2>
-        <p className="text-xl pb-6 mb-5">
-          Crop JPG, PNG, SVG, or GIF by selecting crop areas.
-        </p>
-        <div
-          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
-          onDrop={handleDrop}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          <p className="text-gray-600 text-center">Drag & Drop files here</p>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFiles}
-            className="hidden"
-            id="fileInput"
-          />
-        </div>
-
-        <label
-          htmlFor="fileInput"
-          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
-        >
-          Or Click to Select Files
-        </label>
-
-        <button
-          onClick={downloadAllImages}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition ease-in-out duration-300"
-          disabled={croppedFiles.length === 0}
-        >
-          Download All Cropped Images
-        </button>
-
-        <div className="mt-9 grid grid-cols-3 gap-4">
-          {files.map((file, index) => (
-            <FileItem
-              key={index}
-              index={index}
-              file={file}
-              moveFile={moveFile}
-              removeFile={removeFile}
-              cropImage={cropImage}
-              cropStatus={cropStatus}
-              downloadUrl={croppedFiles[index]?.downloadUrl}
-            />
-          ))}
-        </div>
-      </div>
+      <ImageCropper />
     </DndProvider>
   );
 }

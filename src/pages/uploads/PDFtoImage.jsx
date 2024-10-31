@@ -1,8 +1,85 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import backgroundImage from "../../components/img/background.svg";
 import Header from "../../components/Home/Header";
+import axios from "axios";
+import * as pdfjsLib from "pdfjs-dist";
+//import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs';
+
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Constants
+const BASE_URL = 'https://file-service.manojshivagange.tech'; // Update with your backend upload URL
+const PDF_SERVICE_URL = 'https://pdf-service.manojshivagange.tech'; // Update with your PDF service URL
+
+// Function to initiate the file upload
+async function initiateFileUpload(file) {
+  const uploadRequest = {
+    hash: '12345abcde', // You may calculate a real hash here if needed
+    name: file.name,
+    size: file.size
+  };
+
+  try {
+    const response = await axios.post(`${BASE_URL}/upload/initiate`, uploadRequest);
+    console.log('Initiate file upload response:', response.data);
+    return response.data.eTag;  // Returns the eTag identifier
+  } catch (error) {
+    console.error('Error initiating file upload:', error.response?.data);
+    return null;
+  }
+}
+
+// Function to upload file chunks
+async function uploadFileChunk(identifier, file) {
+  const CHUNK_SIZE = 1024 * 1024; // 1 MB
+  let currentByte = 0;
+
+  while (currentByte < file.size) {
+    const end = Math.min(currentByte + CHUNK_SIZE, file.size);
+    const chunk = file.slice(currentByte, end); // Get the current chunk
+
+    const contentRange = `bytes ${currentByte}-${end - 1}/${file.size}`;
+
+    try {
+      const response = await axios.put(
+          `${BASE_URL}/upload/${identifier}`,
+          chunk,
+          {
+            headers: {
+              'Content-Range': contentRange,
+              'Content-Type': file.type // Set content type for chunk
+            }
+          }
+      );
+      console.log(`Uploaded chunk: ${contentRange}, Response: ${response.status}`);
+    } catch (error) {
+      console.error(`Error uploading chunk ${contentRange}:`, error.response?.data);
+      return;
+    }
+
+    currentByte += CHUNK_SIZE;
+  }
+
+  console.log('File upload completed.');
+}
+
+async function mergePDF(etag) {
+  try {
+    const resp = await axios.post(`${PDF_SERVICE_URL}/convert-pdf-to-images`, {
+      etags: [etag]
+    });
+
+    console.log('Merge PDF response:', resp.data);
+    return resp.data; // Assuming it contains the PDF URL or similar info
+  } catch (error) {
+    console.error('Error merging PDFs:', error.response?.data);
+    return null;
+  }
+}
+
+
 
 const FileItem = ({ file, index, moveFile, removeFile }) => {
   const [, ref] = useDrag({
@@ -46,7 +123,6 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
     </div>
   );
 };
-
 function PDFtoImage() {
   const [files, setFiles] = useState([]);
   const [PDFtoimageUrl, setPDFtoimageUrl] = useState(null);
@@ -86,25 +162,35 @@ function PDFtoImage() {
   };
 
   const handleUpload = async () => {
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
-
-    try {
-      const response = await fetch("YOUR_BACKEND_UPLOAD_URL", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json(); // Assuming backend returns { mergedFileUrl: 'URL' }
-        setMergedFileUrl(data.PDFtoimageUrl); // Set the URL of the merged file
-        alert("Files uploaded and merged successfully!");
-      } else {
-        alert("File upload failed");
-      }
-    } catch (error) {
-      console.error("Error uploading files:", error);
+    if (files.length !== 1) {
+        alert("Please upload a single PDF file");
+        return;
     }
+
+    const etag = await initiateFileUpload(files[0]);
+    if (!etag) {
+      alert("Error initiating file upload");
+      return;
+    }
+    console.log('eTag:', etag);
+    await uploadFileChunk(etag, files[0]);
+    const data = await mergePDF(etag);
+    if (!data) {
+      alert("Error merging PDFs");
+      return;
+    }
+    data.forEach((etag) => {
+      const downloadUrl = `${BASE_URL}/download/${etag}`;
+      console.log('Download URL:', downloadUrl);
+      const anchor = document.createElement('a');
+      anchor.href = downloadUrl;
+      anchor.download = `file_${etag}.pdf`;
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    });
+    setPDFtoimageUrl(data[0]);
   };
 
   return (

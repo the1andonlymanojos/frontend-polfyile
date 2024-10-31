@@ -52,24 +52,24 @@ function Header() {
     { label: "Compress PDF", link: "/CompressPDF" },
     { label: "Split PDF", link: "/HtmltoPDF" },
     { label: "Watermark PDF", link: "/AddWatermark" },
-    { label: "HTML to PDF", link: "/HtmltoPDF" },
+ //   { label: "HTML to PDF", link: "/HtmltoPDF" },
     { label: "JPG to PDF", link: "/ImagetoPDF" },
     { label: "Doc to PDF", link: "/WordtoPDF" },
     { label: "Protect PDF", link: "/ProtectPDF" },
     { label: "PDF to JPG", link: "/PDFtoImage" },
-    { label: "Sign PDF", link: "/CompressPDF" },
-    { label: "Unlock PDF", link: "/CompressPDF" },
-    { label: "Rotate PDF", link: "/WatermarkPDF" },
+  //  { label: "Sign PDF", link: "/CompressPDF" },
+  //  { label: "Unlock PDF", link: "/CompressPDF" },
+ //   { label: "Rotate PDF", link: "/WatermarkPDF" },
   ];
 
   const imageTools = [
     { label: "Compress Image", link: "/CompressImage" },
     { label: "Resize Image", link: "/ResizeImage" },
-    { label: "Crop Image", link: "/CropImage" },
+  //  { label: "Crop Image", link: "/CropImage" },
     { label: "Convert Image", link: "/ConvertImage" },
     { label: "Watermark", link: "/WaterMarkImage" },
     { label: "Rotate Image", link: "/RotateImage" },
-    { label: "HTML to Image", link: "/HtmlImage" },
+    // { label: "HTML to Image", link: "/HtmlImage" },
     { label: "SvgToOther", link: "/SvgImage" },
   ];
 

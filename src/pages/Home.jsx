@@ -11,11 +11,10 @@ export default function Home() {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
-        height: "100vh",
         backgroundPosition: "center",
       }}
     >
-      <Header />
+        <Header />
       <main>
         <Hero />
       </main>

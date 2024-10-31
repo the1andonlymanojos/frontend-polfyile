@@ -1,6 +1,76 @@
 import React, { useState } from "react";
 import backgroundImage from "../../components/img/background.svg";
 import Header from "../../components/Home/Header";
+import axios from "axios";
+
+const BASE_URL = 'https://file-service.manojshivagange.tech'; // Update with your backend upload URL
+const PDF_SERVICE_URL = 'https://pdf-service.manojshivagange.tech'; // Update with your PDF service URL
+
+// Function to initiate the file upload
+async function initiateFileUpload(file) {
+  const uploadRequest = {
+    hash: '12345abcde', // You may calculate a real hash here if needed
+    name: file.name,
+    size: file.size
+  };
+
+  try {
+    const response = await axios.post(`${BASE_URL}/upload/initiate`, uploadRequest);
+    console.log('Initiate file upload response:', response.data);
+    return response.data.eTag;  // Returns the eTag identifier
+  } catch (error) {
+    console.error('Error initiating file upload:', error.response?.data);
+    return null;
+  }
+}
+
+// Function to upload file chunks
+async function uploadFileChunk(identifier, file) {
+  const CHUNK_SIZE = 1024 * 1024; // 1 MB
+  let currentByte = 0;
+
+  while (currentByte < file.size) {
+    const end = Math.min(currentByte + CHUNK_SIZE, file.size);
+    const chunk = file.slice(currentByte, end); // Get the current chunk
+
+    const contentRange = `bytes ${currentByte}-${end - 1}/${file.size}`;
+
+    try {
+      const response = await axios.put(
+          `${BASE_URL}/upload/${identifier}`,
+          chunk,
+          {
+            headers: {
+              'Content-Range': contentRange,
+              'Content-Type': file.type // Set content type for chunk
+            }
+          }
+      );
+      console.log(`Uploaded chunk: ${contentRange}, Response: ${response.status}`);
+    } catch (error) {
+      console.error(`Error uploading chunk ${contentRange}:`, error.response?.data);
+      return;
+    }
+
+    currentByte += CHUNK_SIZE;
+  }
+
+  console.log('File upload completed.');
+}
+
+async function mergePDF(etag, compressionQuality) {
+  try {
+    const resp = await axios.post(`${PDF_SERVICE_URL}/split`, {
+      etags: [etag],
+    });
+
+    console.log('Merge PDF response:', resp.data);
+    return resp.data; // Assuming it contains the PDF URL or similar info
+  } catch (error) {
+    console.error('Error merging PDFs:', error.response?.data);
+    return null;
+  }
+}
 
 function SplitPDF() {
   const [file, setFile] = useState(null);
@@ -21,22 +91,36 @@ function SplitPDF() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
+
 
     try {
-      const response = await fetch("YOUR_BACKEND_SPLIT_URL", {
-        method: "POST",
-        body: formData,
-      });
+        const etag = await initiateFileUpload(file);
+        if (!etag) {
+            alert("Error initiating file upload");
+            return;
+        }
 
-      if (response.ok) {
-        const data = await response.json();
-        setConvertedFileUrl(data.splitFileUrl); // Assuming the response returns a URL for the split files
-        alert("PDF split successfully!");
-      } else {
-        alert("Failed to split PDF");
+        await uploadFileChunk(etag, file);
+
+        const resp = await mergePDF(etag);
+        if (!resp) {
+            alert("Error splitting PDF");
+            return;
+        }
+
+      for (const respElement of resp) {
+        let downloadUrl = `${BASE_URL}/download/${respElement}`;
+        setConvertedFileUrl(downloadUrl);
+        const anchor = document.createElement('a');
+        anchor.href = downloadUrl;
+        anchor.style.display = 'none';
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
       }
+
+
+
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("There was an error processing your request.");
