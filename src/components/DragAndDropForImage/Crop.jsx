@@ -24,7 +24,7 @@ const FileItem = ({ file, index, moveFile, removeFile, cropImage, cropStatus, do
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-full sm:w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -144,7 +144,41 @@ function DragAndCropApp() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
-      <ImageCropper />
+      <div className="p-4">
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFiles}
+          className="border border-gray-300 rounded p-2 mb-4"
+        />
+        <div
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
+          {files.map((file, index) => (
+            <FileItem
+              key={index}
+              file={file}
+              index={index}
+              moveFile={moveFile}
+              removeFile={removeFile}
+              cropImage={cropImage}
+              cropStatus={cropStatus}
+              downloadUrl={croppedFiles[index]?.downloadUrl}
+            />
+          ))}
+        </div>
+        {croppedFiles.length > 0 && (
+          <button
+            onClick={downloadAllImages}
+            className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Download All Cropped Images
+          </button>
+        )}
+      </div>
     </DndProvider>
   );
 }

@@ -22,7 +22,7 @@ const FileItem = ({ file, index, removeFile, rotateImage }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-32 h-32 md:w-40 md:h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -37,7 +37,7 @@ const FileItem = ({ file, index, removeFile, rotateImage }) => {
         onClick={() => removeFile(index)}
         className="absolute top-1 right-1 text-red-500 hover:text-red-700"
       >
-        {/* Delete icon */}
+        {/* Delete icon */} 🗑️
       </button>
       <button
         onClick={() => rotateImage(file)}
@@ -47,7 +47,7 @@ const FileItem = ({ file, index, removeFile, rotateImage }) => {
       </button>
     </div>
   );
-}
+};
 
 function DragAndRotateApp() {
   const [files, setFiles] = useState([]);
@@ -108,11 +108,11 @@ function DragAndRotateApp() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Rotate Images</h2>
-        <p className='text-xl pb-6 mb-5'>Upload JPG, PNG, SVG or GIF images to rotate them.</p>
+        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800 text-center">Rotate Images</h2>
+        <p className='text-xl pb-6 mb-5 text-center'>Upload JPG, PNG, SVG or GIF images to rotate them.</p>
 
         <div
-          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
+          className="w-11/12 sm:w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -129,12 +129,12 @@ function DragAndRotateApp() {
 
         <label
           htmlFor="fileInput"
-          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
+          className="mt-9 bg-blue-500 text-white px-20 py-3 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
         >
           Or Click to Select Files
         </label>
 
-        <div>
+        <div className="mt-6">
           <label htmlFor="rotationAngle" className="text-gray-700">Rotation Angle (degrees):</label>
           <input
             type="number"
@@ -145,7 +145,7 @@ function DragAndRotateApp() {
           />
         </div>
 
-        <div className="mt-9 grid grid-cols-3 gap-4">
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 w-11/12 sm:w-full">
           {files.map((file, index) => (
             <FileItem
               key={index}
@@ -158,13 +158,13 @@ function DragAndRotateApp() {
         </div>
 
         <h3 className="mt-8 text-2xl font-bold text-gray-800">Rotated Images:</h3>
-        <div className="mt-4 grid grid-cols-3 gap-4">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4 w-11/12 sm:w-full">
           {rotatedImages.map((imgSrc, index) => (
             <img
               key={index}
               src={imgSrc}
               alt={`Rotated ${index + 1}`}
-              className="w-40 h-40 object-cover rounded-lg"
+              className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-lg"
             />
           ))}
         </div>

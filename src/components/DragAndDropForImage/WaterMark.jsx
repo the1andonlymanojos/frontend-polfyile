@@ -23,7 +23,7 @@ const FileItem = ({ file, index, moveFile, removeFile, addWatermark, downloadUrl
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-full sm:w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -101,15 +101,13 @@ function DragAndWatermarkApp() {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(originalImg, 0, 0);
 
-        // Watermark settings
         ctx.font = "30px Arial";
         ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
         ctx.textAlign = "right";
         ctx.textBaseline = "bottom";
 
-        // Watermark position
-        const x = canvas.width - 10; // Right
-        const y = canvas.height - 10; // Bottom
+        const x = canvas.width - 10;
+        const y = canvas.height - 10;
 
         ctx.fillText(watermarkText, x, y);
 
@@ -150,10 +148,10 @@ function DragAndWatermarkApp() {
         }}
       >
         <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Add Watermark</h2>
-        <p className="text-xl pb-6 mb-5">Drag & Drop files to add a watermark.</p>
-        
+        <p className="text-xl pb-6 mb-5 text-center px-4">Drag & Drop files to add a watermark.</p>
+
         <div
-          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
+          className="w-80 md:w-96 h-60 md:h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -170,17 +168,17 @@ function DragAndWatermarkApp() {
 
         <label
           htmlFor="fileInput"
-          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
+          className="mt-6 md:mt-9 bg-blue-500 text-white px-10 md:px-20 py-4 md:py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
         >
           Or Click to Select Files
         </label>
 
-        <div className="mt-4">
+        <div className="mt-4 px-4">
           <label className="text-gray-700">Watermark Text:</label>
           <input
             value={watermarkText}
             onChange={(e) => setWatermarkText(e.target.value)}
-            className="p-1 border rounded"
+            className="p-2 border rounded w-full max-w-xs"
           />
         </div>
 
@@ -191,7 +189,7 @@ function DragAndWatermarkApp() {
           Download All Images
         </button>
 
-        <div className="mt-4 grid grid-cols-3 gap-4">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 md:px-8 w-full max-w-4xl">
           {files.map((file, index) => (
             <FileItem
               key={index}

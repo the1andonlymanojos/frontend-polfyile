@@ -48,13 +48,13 @@ const HtmlToImageFromUrlApp = () => {
       }}
     >
       <Header />
-      <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">HTML to Image Converter</h2>
+      <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800 text-center">HTML to Image Converter</h2>
       <input
         type="text"
         placeholder="Enter URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        className="border rounded p-2 mb-4 w-96"
+        className="border rounded p-2 mb-4 w-11/12 md:w-1/2 lg:w-1/3"
       />
       <button
         onClick={handleFetchHtml}
@@ -63,7 +63,7 @@ const HtmlToImageFromUrlApp = () => {
         Fetch HTML
       </button>
 
-      <div ref={captureRef} className="border p-5 bg-white rounded-lg shadow-md mt-5 w-96">
+      <div ref={captureRef} className="border p-5 bg-white rounded-lg shadow-md mt-5 w-11/12 md:w-1/2 lg:w-1/3">
         <h3 className="text-2xl font-semibold">Fetched HTML Content</h3>
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </div>
