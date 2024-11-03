@@ -8,7 +8,7 @@ function PDFTools() {
       >
         <div
           class="tools__item "
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/MergePDF" title="Merge PDF">
                 <div class="tools__item__icon">
@@ -22,7 +22,7 @@ function PDFTools() {
         </div>
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
          <a href="/SplitPDF" title="Split PDF">
                 <div class="tools__item__icon">
@@ -36,7 +36,7 @@ function PDFTools() {
         </div>
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/CompressPDF" title="Compress PDF">
                 <div class="tools__item__icon">
@@ -50,7 +50,7 @@ function PDFTools() {
         </div>
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/WordtoPDF" title="Word to PDF">*/}
         {/*        <div class="tools__item__icon">*/}
@@ -64,7 +64,7 @@ function PDFTools() {
         {/*</div>*/}
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/PDFtoImage" title="PDF to JPG">
                 <div class="tools__item__icon">
@@ -79,7 +79,7 @@ function PDFTools() {
        
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/ImageToPDF" title="JPG to PDF">
                 <div class="tools__item__icon">
@@ -95,7 +95,7 @@ function PDFTools() {
 
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/AddWatermark" title="Watermark">
                 <div class="tools__item__icon">
@@ -109,7 +109,7 @@ function PDFTools() {
         </div>
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/HtmltoPDF" title="HTML to PDF">*/}
         {/*        <div class="tools__item__icon">*/}
@@ -124,7 +124,7 @@ function PDFTools() {
 
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/ProtectPDF" title="Protect PDF">
                 <div class="tools__item__icon">
@@ -139,7 +139,7 @@ function PDFTools() {
 
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/CompressPDF" title="Sign PDF">*/}
         {/*        <div class="tools__item__icon">*/}
@@ -154,7 +154,7 @@ function PDFTools() {
 
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/CompressPDF" title="Rotate PDF">*/}
         {/*        <div class="tools__item__icon">*/}
@@ -169,7 +169,7 @@ function PDFTools() {
 
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/* <a href="/CompressPDF" title="Unlock PDF">*/}
         {/*        <div class="tools__item__icon">*/}

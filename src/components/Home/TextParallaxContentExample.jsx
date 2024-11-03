@@ -6,10 +6,8 @@ import { Link } from "react-router-dom";
 
 export const TextParallaxContentExample = () => {
   return (
-    <div>
-      <TextParallaxContent
-        imgUrl={Video}
-      />
+    <div className="overflow-hidden">
+      <TextParallaxContent imgUrl={Video} />
       <ExampleContent />
     </div>
   );
@@ -19,10 +17,7 @@ const IMG_PADDING = 12;
 
 const TextParallaxContent = ({ imgUrl, subheading, heading }) => {
   return (
-    <div
-      className="w-[90%] md:w-[80%] lg:w-[60%] mx-auto px-4 md:px-0"
-      style={{ paddingLeft: IMG_PADDING, paddingRight: IMG_PADDING }}
-    >
+    <div className="w-full px-4 md:w-[80%] lg:w-[60%] mx-auto md:px-0">
       <div className="relative h-[60vh] md:h-[80vh]">
         <StickyImage imgUrl={imgUrl} />
         <OverlayCopy heading={heading} subheading={subheading} />
@@ -47,15 +42,13 @@ const StickyImage = ({ imgUrl }) => {
         backgroundImage: `url(${imgUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: `calc(70vh - ${IMG_PADDING * 2}px)`,
+        height: `calc(60vh - ${IMG_PADDING * 2}px)`,
         top: IMG_PADDING,
         scale,
       }}
       ref={targetRef}
-      className="sticky z-0 overflow-hidden rounded-3xl"
-    >
-      <motion.div className="absolute inset-0 bg-100/70" style={{ opacity }} />
-    </motion.div>
+      className="sticky z-0 overflow-hidden rounded-3xl md:h-[calc(70vh-24px)]"
+    />
   );
 };
 
@@ -66,7 +59,7 @@ const OverlayCopy = ({ subheading, heading }) => {
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [250, -250]);
+  const y = useTransform(scrollYProgress, [0, 1], [150, -150]);
   const opacity = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0, 1, 0]);
 
   return (
@@ -76,16 +69,16 @@ const OverlayCopy = ({ subheading, heading }) => {
         opacity,
       }}
       ref={targetRef}
-      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-white px-4"
+      className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center text-white px-4 text-center"
     >
-      <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold">{heading}</h2>
-      <p className="text-lg md:text-xl lg:text-2xl">{subheading}</p>
+      <h2 className="text-xl md:text-3xl lg:text-5xl font-bold mb-2">{heading}</h2>
+      <p className="text-base md:text-xl lg:text-2xl">{subheading}</p>
     </motion.div>
   );
 };
 
 const ExampleContent = () => (
-  <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-8 md:pt-0 md:grid-cols-12">
+  <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-16 pt-8 md:pt-12 md:grid-cols-12">
     <h2 className="col-span-1 text-2xl md:text-3xl font-bold md:col-span-4">
       About our Website
     </h2>
@@ -101,11 +94,14 @@ const ExampleContent = () => (
         handled by a dedicated service, promoting ease of maintenance and
         scalability.
       </p>
-      <button
-        className="w-full md:w-auto rounded bg-neutral-900 px-6 md:px-9 py-3 md:py-4 text-lg md:text-xl text-white transition-colors hover:bg-neutral-700"
+      <Link 
+        to="/PDFTools#pdf-tools" 
+        className="inline-block w-full md:w-auto rounded bg-neutral-900 px-6 md:px-9 py-3 md:py-4 text-lg md:text-xl text-white transition-colors hover:bg-neutral-700"
       >
-       <Link to="/PDFTools#pdf-tools">Try Now <FiArrowUpRight className="inline" /></Link>
-      </button>
+        Try Now <FiArrowUpRight className="inline ml-2" />
+      </Link>
     </div>
   </div>
 );
+
+export default TextParallaxContentExample;

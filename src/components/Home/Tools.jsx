@@ -6,7 +6,7 @@ function Tools() {
       <div class="tools__container">
         <div
           class="tools__item "
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/CompressImage" title="Compress IMAGE">
             <div class="tools__item__icon">
@@ -39,7 +39,7 @@ function Tools() {
         </div>
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/ResizeImage" title="Resize IMAGE">
             <div class="tools__item__icon">
@@ -80,7 +80,7 @@ function Tools() {
         </div>
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/CropImage" title="Crop IMAGE">*/}
         {/*    <div class="tools__item__icon">*/}
@@ -112,7 +112,7 @@ function Tools() {
         {/*</div>*/}
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/ConvertImage" title="Convert to JPG">
             <div class="tools__item__icon">
@@ -152,7 +152,7 @@ function Tools() {
         </div>
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/SvgImage" title="Convert from SVG">
             <div class="tools__item__icon">
@@ -193,7 +193,7 @@ function Tools() {
        
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/WaterMarkImage" title="Watermark IMAGE">
             <div class="tools__item__icon">
@@ -230,7 +230,7 @@ function Tools() {
 
         <div
           class="tools__item"
-          style={{ minHeight: "300px", minWidth: "450px" }}
+          style={{ maxHeight: "300px", maxWidth: "450px" }}
         >
           <a href="/RotateImage" title="Rotate IMAGE">
             <div class="tools__item__icon">
@@ -269,7 +269,7 @@ function Tools() {
         </div>
         {/*<div*/}
         {/*  class="tools__item"*/}
-        {/*  style={{ minHeight: "300px", minWidth: "450px" }}*/}
+        {/*  style={{ maxHeight: "300px", maxWidth: "450px" }}*/}
         {/*>*/}
         {/*  <a href="/HtmlImage" title="HTML to IMAGE">*/}
         {/*    <div class="tools__item__icon">*/}
