@@ -31,7 +31,6 @@ async function initiateFileUpload(file) {
   }
 }
 
-// Function to upload file chunks
 async function uploadFileChunk(identifier, file) {
   const CHUNK_SIZE = 1024 * 1024; // 1 MB
   let currentByte = 0;
@@ -44,14 +43,14 @@ async function uploadFileChunk(identifier, file) {
 
     try {
       const response = await axios.put(
-          `${BASE_URL}/upload/${identifier}`,
-          chunk,
-          {
-            headers: {
-              'Content-Range': contentRange,
+        `${BASE_URL}/upload/${identifier}`,
+        chunk,
+        {
+          headers: {
+            'Content-Range': contentRange,
               'Content-Type': file.type // Set content type for chunk
-            }
           }
+        }
       );
       console.log(`Uploaded chunk: ${contentRange}, Response: ${response.status}`);
     } catch (error) {
@@ -79,8 +78,6 @@ async function mergePDF(etag) {
   }
 }
 
-
-
 const FileItem = ({ file, index, moveFile, removeFile }) => {
   const [, ref] = useDrag({
     type: "file",
@@ -100,7 +97,7 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
+      className="relative w-full h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
     >
       <p className="text-gray-800 text-sm truncate">{file.name}</p>
       <button
@@ -123,6 +120,7 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
     </div>
   );
 };
+
 function PDFtoImage() {
   const [files, setFiles] = useState([]);
   const [PDFtoimageUrl, setPDFtoimageUrl] = useState(null);
@@ -163,8 +161,8 @@ function PDFtoImage() {
 
   const handleUpload = async () => {
     if (files.length !== 1) {
-        alert("Please upload a single PDF file");
-        return;
+      alert("Please upload a single PDF file");
+      return;
     }
 
     const etag = await initiateFileUpload(files[0]);
@@ -202,23 +200,20 @@ function PDFtoImage() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex flex-col items-center">
-          <h2 className="text-5xl font-bold mt-20 mb-6 text-gray-800 ">
+        <div className="flex flex-col items-center w-full max-w-6xl px-4 py-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-10 sm:mt-20 mb-4 sm:mb-6 text-gray-800 text-center">
             PDF to Image
           </h2>
-          <h3 className="text-2xl mt-0 mb-10 text-gray-800">
-            Convert each PDF page into a image or extract all images contained
-            in a PDF.
+          <h3 className="text-xl sm:text-2xl mt-0 mb-6 sm:mb-10 text-gray-800 text-center">
+            Convert each PDF page into an image or extract all images contained in a PDF.
           </h3>
 
           <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+            className="w-full max-w-2xl h-60 sm:h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <p className="text-gray-600 text-center">
-              Drag & Drop PDF files here
-            </p>
+            <p className="text-gray-600 text-center text-lg sm:text-xl">Drag & Drop PDF files here</p>
             <input
               type="file"
               multiple
@@ -231,12 +226,12 @@ function PDFtoImage() {
 
           <label
             htmlFor="fileInput"
-            className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+            className="mt-6 sm:mt-9 bg-blue-500 text-white px-8 sm:px-20 py-4 sm:py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg sm:text-xl"
           >
             Click to Select Files
           </label>
 
-          <div className="mt-9 grid grid-cols-3 gap-4">
+          <div className="mt-6 sm:mt-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {files.map((file, index) => (
               <FileItem
                 key={`${file.name}-${index}`}
@@ -248,18 +243,20 @@ function PDFtoImage() {
             ))}
           </div>
 
-          <button
-            onClick={handleUpload}
-            className="mt-2 bg-green-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-xl"
-          >
-            Convert Files
-          </button>
+        
+            <button
+              onClick={handleUpload}
+              className="mt-6 sm:mt-8 bg-green-500 text-white px-8 sm:px-10 py-3 sm:py-5 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-lg sm:text-xl"
+            >
+              Convert Files
+            </button>
+          
 
           {PDFtoimageUrl && (
             <a
               href={PDFtoimageUrl}
-              download="merged_file.pdf"
-              className="mt-10 bg-blue-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+              download="converted_file.pdf"
+              className="mt-6 sm:mt-10 bg-blue-500 text-white px-8 sm:px-10 py-3 sm:py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg sm:text-xl"
             >
               Download Converted File
             </a>

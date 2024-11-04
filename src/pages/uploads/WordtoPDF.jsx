@@ -23,16 +23,16 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
+      className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
     >
-      <p className="text-gray-800 text-sm truncate">{file.name}</p>
+      <p className="text-gray-800 text-xs sm:text-sm truncate">{file.name}</p>
       <button
         onClick={() => removeFile(index)}
         className="absolute top-1 right-1 text-red-500 hover:text-red-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
+          className="h-4 w-4 sm:h-5 sm:w-5"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -59,7 +59,7 @@ function WordtoPDF() {
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     );
-    setFiles(droppedFiles);
+    setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
   };
 
   const handleFiles = (event) => {
@@ -102,8 +102,8 @@ function WordtoPDF() {
       });
 
       if (response.ok) {
-        const data = await response.json(); // Assuming backend returns { convertedFileUrl: 'URL' }
-        setWordtoPDFUrl(data.convertedFileUrl); // Set the URL of the converted file
+        const data = await response.json();
+        setWordtoPDFUrl(data.convertedFileUrl);
         alert("Files uploaded and converted to PDF successfully!");
       } else {
         alert("File upload failed");
@@ -122,20 +122,20 @@ function WordtoPDF() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex flex-col items-center">
-          <h2 className="text-5xl font-bold mt-20 mb-6 text-gray-800">
+        <div className="flex flex-col items-center max-w-3xl w-full px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-10 sm:mt-16 mb-4 sm:mb-6 text-gray-800">
             Word to PDF
           </h2>
-          <h3 className="text-2xl mt-0 mb-10 text-gray-800">
+          <h3 className="text-xl sm:text-2xl mt-0 mb-4 sm:mb-8 text-gray-800 text-center">
             Make DOC and DOCX files easy to read by converting them to PDF.
           </h3>
 
           <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+            className="w-full max-w-lg h-60 sm:h-72 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <p className="text-gray-600 text-center">
+            <p className="text-gray-600 text-center text-sm sm:text-base">
               Drag & Drop Word files here
             </p>
             <input
@@ -150,12 +150,12 @@ function WordtoPDF() {
 
           <label
             htmlFor="fileInput"
-            className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+            className="mt-6 sm:mt-8 bg-blue-500 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg"
           >
-            Click to Select Word Files
+            Select Word Files
           </label>
 
-          <div className="mt-9 grid grid-cols-3 gap-4">
+          <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {files.map((file, index) => (
               <FileItem
                 key={`${file.name}-${index}`}
@@ -167,18 +167,20 @@ function WordtoPDF() {
             ))}
           </div>
 
-          <button
-            onClick={handleUpload}
-            className="mt-2 bg-green-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-xl"
-          >
-            Convert Files
-          </button>
+          {files.length > 0 && (
+            <button
+              onClick={handleUpload}
+              className="mt-8 sm:mt-10 bg-green-500 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-lg"
+            >
+              Convert Files
+            </button>
+          )}
 
           {WordtoPDFUrl && (
             <a
               href={WordtoPDFUrl}
               download="converted_file.pdf"
-              className="mt-10 bg-blue-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+              className="mt-6 sm:mt-8 bg-blue-500 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg"
             >
               Download Converted File
             </a>

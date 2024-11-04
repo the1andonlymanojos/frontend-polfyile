@@ -29,7 +29,6 @@ async function initiateFileUpload(file) {
   }
 }
 
-// Function to upload file chunks
 async function uploadFileChunk(identifier, file) {
   const CHUNK_SIZE = 1024 * 1024; // 1 MB
   let currentByte = 0;
@@ -42,14 +41,14 @@ async function uploadFileChunk(identifier, file) {
 
     try {
       const response = await axios.put(
-          `${BASE_URL}/upload/${identifier}`,
-          chunk,
-          {
-            headers: {
-              'Content-Range': contentRange,
+        `${BASE_URL}/upload/${identifier}`,
+        chunk,
+        {
+          headers: {
+            'Content-Range': contentRange,
               'Content-Type': file.type // Set content type for chunk
-            }
           }
+        }
       );
       console.log(`Uploaded chunk: ${contentRange}, Response: ${response.status}`);
     } catch (error) {
@@ -63,7 +62,6 @@ async function uploadFileChunk(identifier, file) {
   console.log('File upload completed.');
 }
 
-// Function to merge uploaded files into a PDF
 async function mergePDF(etags) {
   try {
     const resp = await axios.post(`${PDF_SERVICE_URL}/convert-images-to-pdf`, {
@@ -95,33 +93,33 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
   });
   const previewUrl = URL.createObjectURL(file);
   return (
-      <div
-          ref={(node) => ref(drop(node))}
-          className="relative w-full h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white overflow-hidden"
+    <div
+      ref={(node) => ref(drop(node))}
+      className="relative w-full h-40 border rounded-lg shadow-md p-2 flex items-center justify-center overflow-hidden"
+    >
+      <img
+        src={previewUrl}
+        alt={file.name}
+        className="object-cover w-full h-full rounded-md"
+      />
+      <button
+        onClick={() => removeFile(index)}
+        className="absolute top-1 right-1 bg-white bg-opacity-75 rounded-full text-red-500 hover:text-red-700"
       >
-        <img
-            src={previewUrl}
-            alt={file.name}
-            className="object-cover w-full h-full rounded-md"
-        />
-        <button
-            onClick={() => removeFile(index)}
-            className="absolute top-1 right-1 bg-white bg-opacity-75 rounded-full text-red-500 hover:text-red-700"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
         >
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-          >
-            <path
-                fillRule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </div>
+          <path
+            fillRule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
   );
 };
 
@@ -132,14 +130,14 @@ function ImageToPDF() {
   const handleDrop = (event) => {
     event.preventDefault();
     const droppedFiles = Array.from(event.dataTransfer.files).filter(
-        (file) => file.type === "image/jpeg" || file.type === "image/png"
+      (file) => file.type === "image/jpeg" || file.type === "image/png"
     );
     setFiles(droppedFiles);
   };
 
   const handleFiles = (event) => {
     const selectedFiles = Array.from(event.target.files).filter(
-        (file) => file.type === "image/jpeg" || file.type === "image/png"
+      (file) => file.type === "image/jpeg" || file.type === "image/png"
     );
     setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
@@ -150,7 +148,7 @@ function ImageToPDF() {
 
   const removeFile = (indexToRemove) => {
     setFiles((prevFiles) =>
-        prevFiles.filter((_, index) => index !== indexToRemove)
+      prevFiles.filter((_, index) => index !== indexToRemove)
     );
   };
 
@@ -164,50 +162,44 @@ function ImageToPDF() {
   };
 
   const handleUpload = async () => {
-  try {
-    // Create an array of promises for each file upload
-    const uploadPromises = files.map(async (file) => {
-      const eTag = await initiateFileUpload(file);
-      if (eTag) {
-        await uploadFileChunk(eTag, file);
-        return eTag;
-      } else {
-        throw new Error(`Failed to initiate upload for file: ${file.name}`);
-      }
-    });
-
-    // Wait for all file uploads to complete
-    const etags = await Promise.all(uploadPromises);
-
-    // Merge the uploaded files into a PDF
-    const pdfResult = await mergePDF(etags);
-
-    if (pdfResult) {
-      alert("Files uploaded and merged successfully!");
-      console.log("Merged PDF available at:", pdfResult);
-
-      // Download the merged PDF
-      pdfResult.forEach((etag) => {
-        const downloadUrl = `${BASE_URL}/download/${etag}`;
-        const anchor = document.createElement('a');
-        anchor.href = downloadUrl;
-        anchor.download = `file_${etag}.pdf`;
-        anchor.style.display = 'none';
-        document.body.appendChild(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
-        setConvertedFileUrl(downloadUrl);
+    try {
+      const uploadPromises = files.map(async (file) => {
+        const eTag = await initiateFileUpload(file);
+        if (eTag) {
+          await uploadFileChunk(eTag, file);
+          return eTag;
+        } else {
+          throw new Error(`Failed to initiate upload for file: ${file.name}`);
+        }
       });
 
-       // Set the URL of the merged PDF
-    } else {
-      alert("Failed to merge files into PDF.");
+      const etags = await Promise.all(uploadPromises);
+      const pdfResult = await mergePDF(etags);
+
+      if (pdfResult) {
+        alert("Files uploaded and merged successfully!");
+        console.log("Merged PDF available at:", pdfResult);
+
+        pdfResult.forEach((etag) => {
+          const downloadUrl = `${BASE_URL}/download/${etag}`;
+          const anchor = document.createElement('a');
+          anchor.href = downloadUrl;
+          anchor.download = `file_${etag}.pdf`;
+          anchor.style.display = 'none';
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
+          setConvertedFileUrl(downloadUrl);
+        });
+      } else {
+        alert("Failed to merge files into PDF.");
+      }
+    } catch (error) {
+      console.error("Error during file upload or merge:", error);
+      alert("An error occurred during the upload or merge process.");
     }
-  } catch (error) {
-    console.error("Error during file upload or merge:", error);
-    alert("An error occurred during the upload or merge process.");
-  }
-};
+  };
+
   return (
   //   <DndProvider backend={HTML5Backend}>
   //     <Header />
@@ -280,87 +272,82 @@ function ImageToPDF() {
   //     </div>
   //   </DndProvider>
   //
-      <DndProvider backend={HTML5Backend}>
-        <Header />
-        <div
-            className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16"
-            style={{
-              backgroundImage: `url(${backgroundImage})`,
-            }}
-        >
-          <div className="flex flex-col items-center max-w-screen-lg w-full p-6 bg-white bg-opacity-90 rounded-lg shadow-lg">
-            <h2 className="text-5xl font-extrabold mt-10 mb-4 text-gray-900">
-              Image to PDF
-            </h2>
-            <p className="text-xl mt-0 mb-10 text-gray-600 text-center">
-              Easily convert your JPEG and PNG images to a single PDF.
-            </p>
+    <DndProvider backend={HTML5Backend}>
+      <Header />
+      <div
+        className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+        }}
+      >
+        <div className="flex flex-col items-center w-full max-w-6xl px-4 py-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-10 mb-4 text-gray-800">
+            Image to PDF
+          </h2>
+          <h3 className="text-xl sm:text-2xl mt-0 mb-8 text-gray-800 text-center">
+            Convert JPEG and PNG images to PDF.
+          </h3>
 
-            {/* Drag and Drop Area */}
-            <div
-                className="w-full max-w-lg h-80 border-4 border-dashed border-blue-400 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-blue-50 transition duration-300 shadow-md cursor-pointer p-6"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-            >
-              <p className="text-lg text-gray-500 font-semibold mb-2">Drag & Drop Images Here</p>
-              <p className="text-sm text-gray-400">(or click below to browse)</p>
-              <input
-                  type="file"
-                  multiple
-                  accept="image/jpeg, image/png"
-                  onChange={handleFiles}
-                  className="hidden"
-                  id="fileInput"
+          <div
+            className="w-full max-w-2xl h-60 sm:h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:bg-opacity-50 transition ease-in-out duration-300"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            <p className="text-gray-600 text-center text-lg sm:text-xl">Drag & Drop Images here</p>
+            <input
+              type="file"
+              multiple
+              accept="image/jpeg, image/png"
+              onChange={handleFiles}
+              className="hidden"
+              id="fileInput"
+            />
+          </div>
+
+          <label
+            htmlFor="fileInput"
+            className="mt-6 sm:mt-8 bg-blue-500 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg sm:text-xl"
+          >
+            Click to Select Files
+          </label>
+
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">
+            {files.map((file, index) => (
+              <FileItem
+                key={`${file.name}-${index}`}
+                index={index}
+                file={file}
+                moveFile={moveFile}
+                removeFile={removeFile}
               />
-            </div>
-
-            {/* File Selection Button */}
-            <label
-                htmlFor="fileInput"
-                className="mt-9 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg cursor-pointer hover:from-blue-600 hover:to-blue-700 transition ease-in-out duration-300 text-lg shadow-lg font-medium"
-            >
-              Select Files
-            </label>
-
-            {/* Responsive File Grid */}
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-4xl">
-              {files.map((file, index) => (
-                  <FileItem
-                      key={`${file.name}-${index}`}
-                      index={index}
-                      file={file}
-                      moveFile={moveFile}
-                      removeFile={removeFile}
-                  />
-              ))}
-            </div>
+            ))}
+          </div>
 
             {/* Convert Button */}
             <button
-                onClick={handleUpload}
-                className="mt-8 bg-green-500 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-green-600 transition duration-300 text-lg font-semibold shadow-lg"
+              onClick={handleUpload}
+              className="mt-8 bg-green-500 text-white px-8 py-3 sm:px-10 sm:py-4 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-lg sm:text-xl"
             >
               Convert to PDF
             </button>
+          
 
-            {/* Download Button */}
-            {convertedFileUrl && (
-                <a
-                    href={convertedFileUrl}
-                    download="converted_file.pdf"
-                    className="mt-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-8 py-4 rounded-lg cursor-pointer hover:from-purple-600 hover:to-purple-700 transition ease-in-out duration-300 text-lg shadow-lg font-medium"
-                >
-                  Download PDF
-                </a>
-            )}
-          </div>
+          {convertedFileUrl && (
+            <a
+              href={convertedFileUrl}
+              download="converted_file.pdf"
+              className="mt-6 bg-blue-500 text-white px-8 py-3 sm:px-10 sm:py-4 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg sm:text-xl"
+            >
+              Download Converted PDF
+            </a>
+          )}
         </div>
-      </DndProvider>
+      </div>
+    </DndProvider>
   );
 }
 
 export default ImageToPDF;
-
 // import { DndContext, closestCenter, DragOverlay } from '@dnd-kit/core';
 // import { arrayMove, SortableContext, useSortable } from '@dnd-kit/sortable';
 // import { CSS } from '@dnd-kit/utilities';
