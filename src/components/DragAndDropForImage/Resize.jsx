@@ -23,7 +23,7 @@ const FileItem = ({ file, index, moveFile, removeFile, resizeImage, resizingStat
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-full h-32 sm:w-40 sm:h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -132,7 +132,7 @@ function DragAndResizeApp() {
   };
 
   const downloadAllImages = () => {
-    resizedFiles.forEach((fileData, index) => {
+    resizedFiles.forEach((fileData) => {
       const link = document.createElement("a");
       link.href = fileData.downloadUrl;
       link.download = fileData.resizedFile.name;
@@ -151,12 +151,12 @@ function DragAndResizeApp() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Resize Image</h2>
-        <p className="text-xl pb-6 mb-5">
+        <h2 className="text-3xl sm:text-4xl font-bold mt-7 mb-6 text-gray-800">Resize Image</h2>
+        <p className="text-lg sm:text-xl pb-6 mb-5 text-center">
           Resize JPG, PNG, SVG, or GIF by specifying new dimensions in pixels or resizing by percentage.
         </p>
         <div
-          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+          className="w-80 sm:w-96 h-64 sm:h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300"
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -173,12 +173,12 @@ function DragAndResizeApp() {
 
         <label
           htmlFor="fileInput"
-          className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
+          className="mt-9 bg-blue-500 text-white px-20 py-3 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300"
         >
           Or Click to Select Files
         </label>
 
-        <div className="mt-4 flex gap-4 items-center">
+        <div className="mt-4 flex gap-2 sm:gap-4 items-center">
           <label htmlFor="resizePercentage" className="text-gray-700">Resize Percentage (0-200%):</label>
           <input
             type="number"
@@ -206,7 +206,7 @@ function DragAndResizeApp() {
           Download All Images
         </button>
 
-        <div className="mt-9 grid grid-cols-3 gap-4">
+        <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
           {files.map((file, index) => (
             <FileItem
               key={index}

@@ -23,7 +23,7 @@ const FileItem = ({ file, index, moveFile, removeFile, convertImage, conversionS
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-full sm:w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -154,7 +154,7 @@ function DragAndConvertApp() {
           Convert images to JPG, PNG, or GIF format.
         </p>
         <div
-          className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+          className="w-full sm:w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -205,7 +205,7 @@ function DragAndConvertApp() {
           Download All Images
         </button>
 
-        <div className="mt-9 grid grid-cols-3 gap-4">
+        <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {files.map((file, index) => (
             <FileItem
               key={index}

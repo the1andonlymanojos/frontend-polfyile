@@ -24,7 +24,7 @@ const FileItem = ({ file, index, removeFile, compressedData }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
+      className="relative w-full sm:w-40 h-40 border rounded-lg shadow-md p-2 flex flex-col items-center justify-center bg-white"
     >
       {file.type.startsWith('image/') ? (
         <img
@@ -112,7 +112,7 @@ function Drag() {
       };
       const compressedFile = await browserImageCompression(file, options);
       const savedPercentage = ((file.size - compressedFile.size) / file.size * 100).toFixed(2);
-      
+
       const compressedBlob = new Blob([compressedFile], { type: compressedFile.type });
       const downloadUrl = URL.createObjectURL(compressedBlob);
 
@@ -133,17 +133,16 @@ function Drag() {
     <DndProvider backend={HTML5Backend}>
       <Header />
       <div
-        className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16"
+        className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16 max-w-screen-lg mx-auto"
         style={{
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
         <div className="flex flex-col items-center">
           <h2 className="text-4xl font-bold mt-7 mb-6 text-gray-800">Compress Image</h2>
-          <p className='text-xl pb-6 mb-5'>Compress JPG, PNG, SVG or GIF with the best quality and compression.
-            Reduce the filesize of your images at once.</p>
+          <p className='text-xl pb-6 mb-5'>Compress JPG, PNG, SVG or GIF with the best quality and compression. Reduce the filesize of your images at once.</p>
           <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+            className="w-full sm:w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
@@ -181,7 +180,7 @@ function Drag() {
             />
           </div>
 
-          <div className="mt-9 grid grid-cols-3 gap-4">
+          <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {files.map((file, index) => (
               <FileItem
                 key={index}
