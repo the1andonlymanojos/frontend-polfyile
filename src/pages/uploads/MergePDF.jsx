@@ -94,7 +94,7 @@ const FileItem = ({ file, index, moveFile, removeFile }) => {
   return (
     <div
       ref={(node) => ref(drop(node))}
-      className="relative w-40 h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
+      className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 border rounded-lg shadow-md p-2 flex items-center justify-center bg-white"
     >
       <p className="text-gray-800 text-sm truncate">{file.name}</p>
       <button
@@ -157,7 +157,6 @@ function Drag() {
   };
 
   const handleUpload = async () => {
-
     const uploadPromises = files.map(async (file) => {
       const identifier = await initiateFileUpload(file);
       if (identifier) {
@@ -200,23 +199,20 @@ function Drag() {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex flex-col items-center">
-          <h2 className="text-5xl font-bold mt-20 mb-6 text-gray-800 ">
+        <div className="flex flex-col items-center px-4 sm:px-8">
+          <h2 className="text-3xl md:text-5xl font-bold mt-12 md:mt-20 mb-4 md:mb-6 text-gray-800">
             Merge PDF files
           </h2>
-          <h3 className="text-2xl mt-0 mb-10 text-gray-800">
-            Combine PDFs in the order you want with the easiest PDF merger
-            available.
+          <h3 className="text-xl md:text-2xl mt-0 mb-8 text-gray-800">
+            Combine PDFs in the order you want with the easiest PDF merger available.
           </h3>
 
           <div
-            className="w-96 h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
+            className="w-full sm:w-80 md:w-96 h-48 sm:h-60 md:h-80 border-4 border-dashed border-gray-400 rounded-lg flex items-center justify-center bg-white cursor-pointer hover:bg-gray-50 transition ease-in-out duration-300 shadow-lg"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <p className="text-gray-600 text-center">
-              Drag & Drop PDF files here
-            </p>
+            <p className="text-gray-600 text-center">Drag & Drop PDF files here</p>
             <input
               type="file"
               multiple
@@ -229,12 +225,12 @@ function Drag() {
 
           <label
             htmlFor="fileInput"
-            className="mt-9 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+            className="mt-6 sm:mt-8 md:mt-9 bg-blue-500 text-white px-8 py-3 sm:px-16 sm:py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-base md:text-xl"
           >
             Click to Select Files
           </label>
 
-          <div className="mt-9 grid grid-cols-3 gap-4">
+          <div className="mt-6 md:mt-9 grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
             {files.map((file, index) => (
               <FileItem
                 key={`${file.name}-${index}`}
@@ -248,20 +244,23 @@ function Drag() {
 
           <button
             onClick={handleUpload}
-            className="mt-2 bg-green-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-green-600 transition ease-in-out duration-300 text-xl"
+            className="mt-8 sm:mt-10 md:mt-12 bg-green-500 text-white px-10 py-3 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-lg"
           >
-            Merge Files
+            Merge PDFs
           </button>
 
           {mergedFileUrl && (
-            <a
-              href={mergedFileUrl}
-              download="merged_file.pdf"
-              className="mt-10 bg-blue-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
-            >
-              Download Merged File
-            </a>
-           )} 
+            <div className="mt-8">
+              <a
+                href={mergedFileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-lg text-blue-500 underline"
+              >
+                Download Merged PDF
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </DndProvider>

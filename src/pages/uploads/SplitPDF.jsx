@@ -6,7 +6,6 @@ import axios from "axios";
 const BASE_URL = 'https://file-service.manojshivagange.tech'; // Update with your backend upload URL
 const PDF_SERVICE_URL = 'https://pdf-service.manojshivagange.tech'; // Update with your PDF service URL
 
-// Function to initiate the file upload
 async function initiateFileUpload(file) {
   const uploadRequest = {
     hash: '12345abcde', // You may calculate a real hash here if needed
@@ -24,7 +23,6 @@ async function initiateFileUpload(file) {
   }
 }
 
-// Function to upload file chunks
 async function uploadFileChunk(identifier, file) {
   const CHUNK_SIZE = 1024 * 1024; // 1 MB
   let currentByte = 0;
@@ -37,14 +35,14 @@ async function uploadFileChunk(identifier, file) {
 
     try {
       const response = await axios.put(
-          `${BASE_URL}/upload/${identifier}`,
-          chunk,
-          {
-            headers: {
-              'Content-Range': contentRange,
+        `${BASE_URL}/upload/${identifier}`,
+        chunk,
+        {
+          headers: {
+            'Content-Range': contentRange,
               'Content-Type': file.type // Set content type for chunk
-            }
           }
+        }
       );
       console.log(`Uploaded chunk: ${contentRange}, Response: ${response.status}`);
     } catch (error) {
@@ -91,22 +89,20 @@ function SplitPDF() {
       return;
     }
 
-
-
     try {
-        const etag = await initiateFileUpload(file);
-        if (!etag) {
-            alert("Error initiating file upload");
-            return;
-        }
+      const etag = await initiateFileUpload(file);
+      if (!etag) {
+        alert("Error initiating file upload");
+        return;
+      }
 
-        await uploadFileChunk(etag, file);
+      await uploadFileChunk(etag, file);
 
-        const resp = await mergePDF(etag);
-        if (!resp) {
-            alert("Error splitting PDF");
-            return;
-        }
+      const resp = await mergePDF(etag);
+      if (!resp) {
+        alert("Error splitting PDF");
+        return;
+      }
 
       for (const respElement of resp) {
         let downloadUrl = `${BASE_URL}/download/${respElement}`;
@@ -118,8 +114,6 @@ function SplitPDF() {
         anchor.click();
         document.body.removeChild(anchor);
       }
-
-
 
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -135,11 +129,11 @@ function SplitPDF() {
       }}
     >
       <Header />
-      <div className="flex flex-col items-center">
-        <h2 className="text-5xl font-bold mt-20 mb-6 text-gray-800">
+      <div className="flex flex-col items-center px-4 md:px-0 w-full max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-10 md:mt-20 mb-4 md:mb-6 text-gray-800 text-center">
           Split PDF
         </h2>
-        <h3 className="text-2xl mt-0 mb-10 text-gray-800">
+        <h3 className="text-xl md:text-2xl mt-0 mb-6 md:mb-10 text-gray-800 text-center">
           Separate whole set for easy conversion into independent PDF files.
         </h3>
 
@@ -153,7 +147,7 @@ function SplitPDF() {
 
         <label
           htmlFor="fileInput"
-          className="mt-3 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+          className="mt-3 bg-blue-500 text-white px-8 md:px-20 py-4 md:py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg md:text-xl text-center w-full md:w-auto"
         >
           Click to Select PDF File
         </label>
@@ -166,17 +160,18 @@ function SplitPDF() {
 
         <button
           onClick={handleUpload}
-          className="mt-8 bg-green-500 text-white px-20 py-3 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-xl"
+          className="mt-8 bg-green-500 text-white px-8 md:px-20 py-3 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-lg md:text-xl w-full md:w-auto"
         >
           Split PDF
         </button>
 
         {convertedFileUrl && (
-          <div className="mt-10 bg-blue-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl">
+          <div className="mt-10 bg-blue-500 text-white px-6 md:px-10 py-3 md:py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg md:text-xl text-center w-full md:w-auto">
             <a
               href={convertedFileUrl}
               target="_blank"
               rel="noopener noreferrer"
+              className="block w-full h-full"
             >
               Download Split PDF Files
             </a>

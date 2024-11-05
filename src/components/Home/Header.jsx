@@ -43,7 +43,7 @@ export default function Header() {
   const pdfTools = [
     { label: "Merge PDF", link: "/MergePDF" },
     { label: "Compress PDF", link: "/CompressPDF" },
-    { label: "Split PDF", link: "/HtmltoPDF" },
+    { label: "Split PDF", link: "/SplitPDF" },
     { label: "Watermark PDF", link: "/AddWatermark" },
     { label: "JPG to PDF", link: "/ImagetoPDF" },
     { label: "Doc to PDF", link: "/WordtoPDF" },

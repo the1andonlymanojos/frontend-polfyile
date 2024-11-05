@@ -6,7 +6,6 @@ import axios from "axios";
 const BASE_URL = 'https://file-service.manojshivagange.tech'; // Update with your backend upload URL
 const PDF_SERVICE_URL = 'https://pdf-service.manojshivagange.tech'; // Update with your PDF service URL
 
-// Function to initiate the file upload
 async function initiateFileUpload(file) {
   const uploadRequest = {
     hash: '12345abcde', // You may calculate a real hash here if needed
@@ -24,7 +23,6 @@ async function initiateFileUpload(file) {
   }
 }
 
-// Function to upload file chunks
 async function uploadFileChunk(identifier, file) {
   const CHUNK_SIZE = 1024 * 1024; // 1 MB
   let currentByte = 0;
@@ -73,7 +71,6 @@ async function mergePDF(etag,watermarkText,opacity,position ) {
       opacity: opacity,
       position: position,
     });
-
     console.log('Merge PDF response:', resp.data);
     return resp.data; // Assuming it contains the PDF URL or similar info
   } catch (error) {
@@ -81,7 +78,6 @@ async function mergePDF(etag,watermarkText,opacity,position ) {
     return null;
   }
 }
-
 
 function AddWatermark() {
   const [file, setFile] = useState(null);
@@ -105,22 +101,20 @@ function AddWatermark() {
       return;
     }
 
-
     try {
-
       let identifier = await initiateFileUpload(file);
-        if (!identifier) {
-            alert("Failed to initiate file upload");
-            return;
-        }
-        await uploadFileChunk(identifier, file);
+      if (!identifier) {
+        alert("Failed to initiate file upload");
+        return;
+      }
+      await uploadFileChunk(identifier, file);
         const data = await mergePDF(identifier,watermarkText,opacity,position);
         if(!data) {
-            alert("Failed to add watermark to PDF");
-            return;
-        }
-        let url = `${BASE_URL}/download/${data[0]}`;
-        setConvertedFileUrl(data.url);
+        alert("Failed to add watermark to PDF");
+        return;
+      }
+      let url = `${BASE_URL}/download/${data[0]}`;
+      setConvertedFileUrl(data.url);
 
       const anchor = document.createElement('a');
       anchor.href = url;
@@ -128,7 +122,6 @@ function AddWatermark() {
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
-
 
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -138,17 +131,17 @@ function AddWatermark() {
 
   return (
     <div
-      className="flex flex-col items-center justify-start min-h-screen bg-cover bg-no-repeat pt-16"
+      className="flex flex-col items-center min-h-screen bg-cover bg-no-repeat pt-16 px-4 lg:px-16"
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}
     >
       <Header />
-      <div className="flex flex-col items-center">
-        <h2 className="text-5xl font-bold mt-20 mb-6 text-gray-800">
+      <div className="flex flex-col items-center max-w-2xl w-full lg:max-w-4xl mx-auto">
+        <h2 className="text-4xl lg:text-6xl font-bold mt-20 mb-6 text-gray-800">
           Add Watermark
         </h2>
-        <h3 className="text-2xl mt-0 mb-10 text-gray-800">
+        <h3 className="text-xl lg:text-2xl mt-0 mb-10 text-gray-800 text-center">
           Stamp a text over your PDF in seconds.
         </h3>
 
@@ -162,9 +155,9 @@ function AddWatermark() {
 
         <label
           htmlFor="fileInput"
-          className="mt-3 bg-blue-500 text-white px-20 py-8 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl"
+          className="mt-3 bg-blue-500 text-white px-6 py-2 lg:px-10 lg:py-3 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-lg lg:text-xl"
         >
-          Click to Select PDF File
+          Select PDF File
         </label>
 
         {file && (
@@ -173,23 +166,21 @@ function AddWatermark() {
           </div>
         )}
 
-        {/* Watermark Text Input */}
-        <div className="mt-6 w-full md:w-1/2  text-center">
-          <label className="text-gray-700 text-lg mb-2 block">
+        <div className="mt-6 w-full">
+          <label className="text-gray-700 text-lg lg:text-xl mb-2 block text-center">
             Watermark Text:
           </label>
           <input
             type="text"
             value={watermarkText}
             onChange={(e) => setWatermarkText(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 lg:py-3 border rounded-lg"
             placeholder="Enter watermark text"
           />
         </div>
 
-        {/* Opacity Level Slider */}
-        <div className="flex flex-col items-center mt-6 w-full md:w-1/2 lg:w-1/3">
-          <label className="text-gray-700 text-lg mb-2">
+        <div className="flex flex-col items-center mt-6 w-full">
+          <label className="text-gray-700 text-lg lg:text-xl mb-2">
             Opacity Level: {opacity}%
           </label>
           <input
@@ -202,15 +193,14 @@ function AddWatermark() {
           />
         </div>
 
-        {/* Position Dropdown */}
-        <div className="mt-6 w-full md:w-1/2 lg:w-1/3 text-center">
-          <label className="text-gray-700 text-lg mb-2 block">
+        <div className="mt-6 w-full text-center">
+          <label className="text-gray-700 text-lg lg:text-xl mb-2 block">
             Position:
           </label>
           <select
             value={position}
             onChange={(e) => setPosition(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 lg:py-3 border rounded-lg"
           >
             <option value="center">Center</option>
             <option value="top-left">Top-left</option>
@@ -222,17 +212,18 @@ function AddWatermark() {
 
         <button
           onClick={handleUpload}
-          className="mt-8 bg-green-500 text-white px-20 py-3 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-xl"
+          className="mt-8 bg-green-500 text-white px-8 py-3 lg:px-10 lg:py-4 rounded-lg hover:bg-green-600 transition ease-in-out duration-300 text-lg lg:text-xl"
         >
           Add Watermark
         </button>
 
         {convertedFileUrl && (
-          <div className="mt-10 bg-blue-500 text-white px-10 py-5 rounded-lg cursor-pointer hover:bg-blue-600 transition ease-in-out duration-300 text-xl">
+          <div className="mt-10 text-center">
             <a
               href={convertedFileUrl}
               target="_blank"
               rel="noopener noreferrer"
+              className="bg-blue-500 text-white px-8 py-3 lg:px-10 lg:py-4 rounded-lg hover:bg-blue-600 transition ease-in-out duration-300 text-lg lg:text-xl"
             >
               Download Watermarked File
             </a>

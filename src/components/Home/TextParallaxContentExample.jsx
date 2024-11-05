@@ -95,7 +95,7 @@ const ExampleContent = () => (
         scalability.
       </p>
       <Link 
-        to="/PDFTools#pdf-tools" 
+        to="#pdf-tools" 
         className="inline-block w-full md:w-auto rounded bg-neutral-900 px-6 md:px-9 py-3 md:py-4 text-lg md:text-xl text-white transition-colors hover:bg-neutral-700"
       >
         Try Now <FiArrowUpRight className="inline ml-2" />
