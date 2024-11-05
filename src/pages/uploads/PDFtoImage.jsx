@@ -177,18 +177,26 @@ function PDFtoImage() {
       alert("Error merging PDFs");
       return;
     }
-    data.forEach((etag) => {
-      const downloadUrl = `${BASE_URL}/download/${etag}`;
-      console.log('Download URL:', downloadUrl);
+    try {
+      let url = `${BASE_URL}/zip`;
+      let dataforRequest = {
+        etags: data,
+      };
+      const response = await axios.post(url, dataforRequest);
+      console.log('Zip response:', response.data);
+
+      let downloadUrl = `${BASE_URL}/download/${response.data.eTag}`;
+      console.log(downloadUrl)
+      setPDFtoimageUrl(downloadUrl)
       const anchor = document.createElement('a');
       anchor.href = downloadUrl;
-      anchor.download = `file_${etag}.pdf`;
       anchor.style.display = 'none';
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
-    });
-    setPDFtoimageUrl(data[0]);
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   return (

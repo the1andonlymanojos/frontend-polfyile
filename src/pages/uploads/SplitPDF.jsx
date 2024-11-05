@@ -104,8 +104,15 @@ function SplitPDF() {
         return;
       }
 
-      for (const respElement of resp) {
-        let downloadUrl = `${BASE_URL}/download/${respElement}`;
+      try {
+        let url = `${BASE_URL}/zip`;
+        let data = {
+          etags: resp,
+        };
+        const response = await axios.post(url, data);
+        console.log('Zip response:', response.data);
+
+        let downloadUrl = `${BASE_URL}/download/${response.data.eTag}`;
         setConvertedFileUrl(downloadUrl);
         const anchor = document.createElement('a');
         anchor.href = downloadUrl;
@@ -113,6 +120,8 @@ function SplitPDF() {
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
+      } catch (e) {
+        console.log(e)
       }
 
     } catch (error) {
