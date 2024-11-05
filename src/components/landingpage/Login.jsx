@@ -1,52 +1,52 @@
 import React from "react";
 
-const LoginForm = ({ handleSignUpClick }) => {
+const Login = ({ handleSignUpClick }) => {
   return (
-    <div className="w-[500px] h-[650px] bg-white shadow-lg rounded-lg p-6">
-      <p className="text-center text-2xl font-extrabold mb-8">Welcome back</p>
-      <form className="flex flex-col gap-4 mb-4">
+    <div className="w-full max-w-[500px] bg-white shadow-lg rounded-lg p-4 sm:p-5 md:p-6">
+      <p className="text-center text-xl sm:text-2xl font-extrabold mb-4 sm:mb-6 md:mb-8">Welcome back</p>
+      <form className="flex flex-col gap-3 sm:gap-4 mb-4">
         <input
           type="email"
-          className="rounded-full border border-gray-300 p-3 outline-none"
+          className="rounded-full border border-gray-300 p-2 sm:p-3 outline-none"
           placeholder="Email"
         />
         <input
           type="password"
-          className="rounded-full border border-gray-300 p-3 outline-none"
+          className="rounded-full border border-gray-300 p-2 sm:p-3 outline-none"
           placeholder="Password"
         />
-        <p className="text-right underline text-gray-500 hover:text-black text-sm cursor-pointer">
+        <p className="text-right underline text-gray-500 hover:text-black text-xs sm:text-sm cursor-pointer">
           Forgot Password?
         </p>
-        <button className="bg-blue-500 text-white rounded-full p-3 shadow-md active:shadow-none">
+        <button className="bg-blue-500 text-white rounded-full p-2 sm:p-3 shadow-md active:shadow-none">
           Log in
         </button>
       </form>
-      <p className="text-center text-l text-gray-500">
+      <p className="text-center text-sm sm:text-base text-gray-500">
         Don't have an account?{" "}
         <button
           className="text-blue-500 underline cursor-pointer"
-          onClick={handleSignUpClick} // Trigger login popup on click
+          onClick={handleSignUpClick}
         >
           Sign Up
         </button>
       </p>
-      <div className="flex flex-col gap-4 mt-5">
-        <div className="bg-white text-black rounded-full py-3 flex justify-center items-center gap-5 cursor-pointer border-2 border-gray-400 ">
+      <div className="flex flex-col gap-3 sm:gap-4 mt-4 sm:mt-5">
+        <div className="bg-white text-black rounded-full py-2 sm:py-3 flex justify-center items-center gap-3 sm:gap-5 cursor-pointer border-2 border-gray-400 text-sm sm:text-base">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
             alt="Facebook logo"
-            className="w-6 h-6" // Adjust the size as per your requirement
+            className="w-5 h-5 sm:w-6 sm:h-6"
           />
           Sign up with Facebook
         </div>
-        <div className="bg-white text-black rounded-full py-3 flex justify-center items-center gap-2 cursor-pointer border-2 border-gray-400">
+        <div className="bg-white text-black rounded-full py-2 sm:py-3 flex justify-center items-center gap-2 sm:gap-3 cursor-pointer border-2 border-gray-400 text-sm sm:text-base">
           <div>
             <svg
               viewBox="0 0 256 262"
               preserveAspectRatio="xMidYMid"
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-auto pr-3" // Adjust the size as needed
+              className="h-5 w-auto sm:h-6 pr-2 sm:pr-3"
             >
               <path
                 d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
@@ -73,4 +73,4 @@ const LoginForm = ({ handleSignUpClick }) => {
   );
 };
 
-export default LoginForm;
+export default Login;

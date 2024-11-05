@@ -1,29 +1,30 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-5 left-1/2 transform -translate-x-1/2 w-full text-lg md:text-3xl text-black px-5 max-md:px-2">
-      <nav>
-        <ul className="flex justify-center gap-8 md:gap-12 list-none p-0 m-0">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white shadow-md py-4 px-4 sm:px-6">
+      <nav className="max-w-7xl mx-auto">
+        <ul className="flex flex-wrap justify-center gap-4 sm:gap-8 text-sm sm:text-base">
           <li>
-            <a className="text-gray-500 hover:text-blue-600 transition duration-200" href="/Help">
+            <Link to="/Help" className="text-gray-500 hover:text-blue-600 transition duration-200">
               Help
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="text-gray-500 hover:text-blue-600 transition duration-200" href="/About">
+            <Link to="/About" className="text-gray-500 hover:text-blue-600 transition duration-200">
               About
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="text-gray-500 hover:text-blue-600 transition duration-200" href="/Privacy">
+            <Link to="/Privacy" className="text-gray-500 hover:text-blue-600 transition duration-200">
               Privacy
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="text-gray-500 hover:text-blue-600 transition duration-200" href="/Term">
+            <Link to="/Term" className="text-gray-500 hover:text-blue-600 transition duration-200">
               Terms
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
