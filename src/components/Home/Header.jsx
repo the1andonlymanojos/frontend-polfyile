@@ -123,33 +123,6 @@ export default function Header() {
           </div>
 
           <div className="flex items-center">
-            <div
-              className="relative group"
-              onMouseEnter={toggleProfileDropdown}
-              onMouseLeave={toggleProfileDropdown}
-            >
-              <button className="flex text-xl lg:text-2xl text-gray-700 px-4 lg:px-6 py-3 rounded-md hover:text-sky-500 mt-1.5">
-                <User className="w-6 h-6 mr-2" />
-                {isProfileDropdownOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-
-              {isProfileDropdownOpen && (
-                <div className="absolute mt-2 w-40 bg-white rounded-md shadow-lg right-0 z-50">
-                  <ul className="py-1 text-black">
-                    <li>
-                      <a href="/account" className="block px-4 py-2 hover:bg-gray-100">
-                        Account Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/logout" className="block px-4 py-2 hover:bg-gray-100">
-                        Logout
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
 
             <button className="md:hidden text-gray-700 hover:text-sky-500" onClick={toggleMobileMenu}>
               <Menu className="w-6 h-6" />

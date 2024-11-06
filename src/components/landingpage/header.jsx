@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./Login";
+import {browser} from "globals";
 
 const Header = () => {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -30,7 +31,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[1041] w-full h-[60px] sm:h-[80px] lg:h-[100px] bg-white shadow-md shadow-gray-500/30 px-4 lg:px-6 flex items-center">
+      <header className="fixed top-0 left-0 right-0 z-[1041] w-full h-[60px] sm:h-[80px] lg:h-[100px] bg-white px-4 lg:px-6 flex items-center">
         <div className="flex gap-2 sm:gap-3 text-black whitespace-nowrap items-center">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/22f8d890c18bf5c16d6918bdd45acbf15a748688ba0804a0fa8082349d5c8f2f?placeholderIfAbsent=true&apiKey=b649485253dc47298996013798279fca"
@@ -44,20 +45,6 @@ const Header = () => {
             POLYFILE
           </h1>
         </div>
-        <nav className="hidden sm:flex gap-4 lg:gap-10 ml-auto">
-          <button
-            onClick={handleLoginClick}
-            className="px-4 lg:px-9 py-2 text-base lg:text-3xl text-black rounded-[50px] hover:text-sky-700"
-          >
-            Log in
-          </button>
-          <button
-            onClick={handleSignUpClick}
-            className="px-4 lg:px-9 py-2 text-base lg:text-3xl text-white bg-sky-600 rounded-[50px] hover:bg-black"
-          >
-            Sign Up
-          </button>
-        </nav>
         <button
           className="sm:hidden ml-auto text-2xl"
           onClick={toggleMobileMenu}
@@ -71,18 +58,12 @@ const Header = () => {
       {showMobileMenu && (
         <div className="fixed inset-0 z-[1042] bg-white pt-[60px]">
           <nav className="flex flex-col items-center gap-4 p-4">
-            <button
-              onClick={handleLoginClick}
+            <a
+              href={"/Home"}
               className="w-full px-4 py-2 text-lg text-black rounded-[50px] hover:text-sky-700 border border-black"
             >
-              Log in
-            </button>
-            <button
-              onClick={handleSignUpClick}
-              className="w-full px-4 py-2 text-lg text-white bg-sky-600 rounded-[50px] hover:bg-black"
-            >
-              Sign Up
-            </button>
+              Get Started
+            </a>
           </nav>
           <button
             className="absolute top-4 right-4 text-2xl"
